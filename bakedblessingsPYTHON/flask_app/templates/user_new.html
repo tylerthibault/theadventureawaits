@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="h-screen w-screen flex justify-center items-center">
+    <div class="w-full grid grid-cols-2">
+        <div class="flex flex-col items-center gap-3">
+            <h2 class="text-4xl">Login</h2>
+            {% include 'forms/login.html' %}
+        </div>
+        <div class="flex flex-col items-center gap-3">
+            <h2 class="text-4xl">Register</h2>
+            {% include 'forms/registration.html' %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

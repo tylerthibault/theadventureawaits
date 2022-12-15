@@ -1,0 +1,15 @@
+<nav class="flex flex-col justify-center items-center gap-3 relative">
+    <ul class="flex gap-3 text-xl">
+        <li><a href="/">Home</a></li>
+        <li>|</li>
+        <li><a href="/">About Me</a></li>
+        <li>|</li>
+        <li><a href="/">Order</a></li>
+        <li>|</li>
+        {% if session['uuid'] %}
+        <li><a href="/user/logout">Logout</a></li>
+        {% else %}
+        <li><a href="/user/new">Login Or Register</a></li>
+        {% endif %}
+    </ul>
+</nav>
