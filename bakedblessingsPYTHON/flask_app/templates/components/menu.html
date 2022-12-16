@@ -2,21 +2,22 @@
     <h2 class="text-xl">Menu</h2>
     <div class="grid grid-cols-12 p-3">
         <div class="col-span-4">
-            <div class="grid grid-cols-3 gap-1">
+            <div class="grid grid-cols-3 gap-3 h-full">
                 {% for cat in all_categories %}
+                {% set outer_loop = loop.index0 %}
                 {% for product in cat.all_products %}
-                <div class="w-[80%] text-center bg-white rounded shadow">
-                    <p class="cursor-pointer product-btn" target="product_{{ product.id }}">{{ product.name }}</p>
+                <div class="{{ 'bg-bb-color-a shadow-white' if outer_loop + loop.index0 == 0 else 'bg-white' }} w-[80%] text-center  cursor-pointer rounded shadow h-full flex justify-center items-center product-btn" target="product_{{ product.id }}">
+                    <p>{{ product.name }}</p>
                 </div>
                 {% endfor %}
                 {% endfor %}
             </div>
         </div>
-        <div class="col-span-8 bg-white">
+        <div class="col-span-8 bg-white rounded">
             {% for cat in all_categories %}
             {% set outer_loop = loop.index0 %}
             {% for product in cat.all_products %}
-            <div class="{{ '' if outer_loop + loop.index0 == 0 else 'hidden' }} flex flex-col items-center product-display"
+            <div class="{{ '' if outer_loop + loop.index0 == 0 else 'hidden' }} flex flex-col items-center product-display min-h-[15em]"
                 id="product_{{ product.id }}">
                 <h3 class="text-2xl">{{ product.name }}</h3>
                 <div class="flex gap-3">
@@ -31,7 +32,8 @@
                     <p>{{ product.name }} is currently not available 😭</p>
                     {% endif %}
                 </div>
-                <p><strong>description: </strong>{{ product.description }}</p>
+                <p><strong>description:</strong></p>
+                <p>{{ product.description }}</p>
             </div>
             {% endfor %}
             {% endfor %}
