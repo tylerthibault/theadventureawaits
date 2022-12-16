@@ -7,6 +7,12 @@
         <li><a href="/">Order</a></li>
         <li>|</li>
         {% if session['uuid'] %}
+        {% if session['level'] > 1 %}
+        <li><a href="/admin/dashboard">Dashboard</a></li>
+        {% else %}
+        <li><a href="/dashboard">Dashboard</a></li>
+        {% endif %}
+        <li>|</li>
         <li><a href="/user/logout">Logout</a></li>
         {% else %}
         <li><a href="/user/new">Login Or Register</a></li>

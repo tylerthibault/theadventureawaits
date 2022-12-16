@@ -44,7 +44,7 @@ def user_create():
     return redirect('/')
 
 # ********* READ *********
-@app.route('/user/')
+@app.route('/user')
 def user_show():
     context = {
         'all_users' :  user_model.User.get_all()

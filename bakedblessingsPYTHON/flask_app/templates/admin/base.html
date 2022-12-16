@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block navbar %}
+{% block admin_navbar %}
+{% include 'components/admin/navbar.html' %}
+{% endblock admin_navbar %}
+{% endblock navbar %}
+
+
+{% block content %}
+<!-- Admin Title -->
+<div class="flex justify-center text-4xl">
+    {% block admin_title %}
+    <h1>base title</h1>
+    {% endblock admin_title %}
+</div>
+
+<!-- Admin Content -->
+{% block admin_content %}
+
+{% endblock admin_content %}
+{% endblock content %}
+
+{% block js %}
+{% block admin_js %}
+    
+{% endblock admin_js %}
+{% endblock js %}

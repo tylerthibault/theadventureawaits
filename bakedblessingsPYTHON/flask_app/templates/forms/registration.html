@@ -22,13 +22,6 @@
             {% endfor %}
         </div>
         <div class="form-field-col">
-            <label for="phone_num">Phone Number</label>
-            <input type="number" name="phone_num" id="phone_num">
-            {% for message in get_flashed_messages(category_filter=['err_users_phone_num']) %}
-            <p class="text-red-500">{{message}}</p>
-            {% endfor %}
-        </div>
-        <div class="form-field-col">
             <label for="pw">Password</label>
             <input type="text" name="pw" id="pw">
             {% for message in get_flashed_messages(category_filter=['err_users_pw']) %}

@@ -1,0 +1,57 @@
+<form class="flex flex-col justify-center items-center" action="/admin/product/{{ product.id }}/update" method="post">
+    <div class="flex gap-3">
+        <div class="form-field-col">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" value="{{ product.name }}">
+            {% for message in get_flashed_messages(category_filter=['err_products_name']) %}
+            <p class="error-msg">{{message}}</p>
+            {% endfor %}
+        </div>
+        <div class="form-field-col">
+            <label for="size">Size (in inches)</label>
+            <input type="number" name="size" id="size" value="{{ product.size }}">
+            {% for message in get_flashed_messages(category_filter=['err_products_size']) %}
+            <p class="error-msg">{{message}}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="flex gap-3">
+        <div class="form-field-col">
+            <label for="price">Price</label>
+            <input type="number" name="price" id="price" placeholder="$" value="{{ product.price }}">
+            {% for message in get_flashed_messages(category_filter=['err_products_price']) %}
+            <p class="error-msg">{{message}}</p>
+            {% endfor %}
+        </div>
+        <div class="form-field-col">
+            <label for="qty">QTY</label>
+            <input type="number" name="qty" id="qty" value="{{ product.qty }}">
+        </div>
+    </div>
+    <div class="flex gap-3">
+        <div class="form-field-col">
+            <label for="is_available">Is Available</label>
+            {% if product.is_available %}
+            <input type="checkbox" name="is_available" id="is_available" checked>
+            {% else %}
+            <input type="checkbox" name="is_available" id="is_available">
+            {% endif %}
+        </div>
+        <div class="form-field-col">
+            <label for="category">Category</label>
+            <select class="input" name="category_id" id="category_id">
+                <option value="{{ product.category_id }}">{{ product.get_category.name }}</option>
+                {% for cat in all_categories %}
+                {% if cat.id != product.category_id %}
+                <option class="shadow-sm" value="{{ cat.id }}">{{ cat.name }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="form-field-col">
+        <label for="description">Description</label>
+        <textarea class="input" name="description" id="description" cols="30" rows="5"></textarea>
+    </div>
+    <button class="bg-yellow-500">Update Item</button>
+</form>

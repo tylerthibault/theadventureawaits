@@ -97,7 +97,7 @@ class Base:
         valid_attrs = cls.get_valid_attributes(cls.__dict__['attributes'], data)
         info = cls.generate_paired(valid_attrs, **data)
 
-        where_string = cls.generate_where(where)
+        where_string = cls.generate_where(**where)
         query = f"UPDATE {cls.table_name} SET {info} WHERE {where_string};"
         return connectToMySQL(DATABASE).query_db(query, data)
 
@@ -108,7 +108,7 @@ class Base:
         Args:
             where (dict): takes in keys that match the records in which you want to delete
         """
-        where_string = cls.generate_where(where)
+        where_string = cls.generate_where(**where)
         query = f"DELETE FROM {cls.table_name} WHERE {where_string};"
         return connectToMySQL(DATABASE).query_db(query)
 
@@ -117,10 +117,11 @@ class Base:
         is_valid = True
 
         for key in data:
-            # print(f"checking key: {key} on table: {cls.table_name}")
-            if len(data[key]) < 1:
-                # print("not valid")
-                is_valid = False
-                flash("*Field is required", f"err_{cls.table_name}_{key}")
+            if key in cls.required_attributes:
+                print(f"checking key: {key} on table: {cls.table_name}")
+                if len(data[key]) < 1:
+                    print("not valid")
+                    is_valid = False
+                    flash("*Field is required", f"err_{cls.table_name}_{key}")
         
         return is_valid

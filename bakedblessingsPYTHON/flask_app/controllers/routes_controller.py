@@ -1,11 +1,14 @@
 from flask_app import app
 from flask import render_template, redirect, session, request
-from flask_app.models import user_model
+from flask_app.models import user_model, product_model, category_model
 from flask_app.config.helpers import login_required, admin_required
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    context = {
+        'all_categories': category_model.Category.get_all_with_products()
+    }
+    return render_template("index.html", **context)
 
 @app.route("/dashboard")
 @login_required

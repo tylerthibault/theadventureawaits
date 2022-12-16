@@ -1,0 +1,60 @@
+{% extends 'admin/base.html' %}
+
+{% block admin_title %}
+<h1>All Products</h1>
+{% endblock admin_title %}
+
+{% block admin_content %}
+<div class="flex justify-center mt-3">
+    <ul class="flex gap-3">
+        <li><span class="cursor-pointer" id="add-product-btn" target="product-form">Add Product</span></li>
+        <li>|</li>
+        <li><span class="cursor-pointer" id="add-category-btn" target="category-form">Add Category</span></li>
+    </ul>
+</div>
+<div class="flex justify-evenly border py-3 hidden" id="category-form">
+    {% include 'forms/category_form.html' %}
+</div>
+<div class="flex justify-evenly border py-3 hidden" id="product-form">
+    {% include 'forms/product_form.html' %}
+</div>
+<div class="mt-3 flex justify-center">
+    <table class="w-10/12">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>category</th>
+                <th>Size</th>
+                <th>Price</th>
+                <th>QTY</th>
+                <th>Is Available</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in all_products %}
+                <tr>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.category.name }}</td>
+                    <td>{{ product.size }}</td>
+                    <td>{{ product.price }}</td>
+                    <td>{{ product.qty }}</td>
+                    {% if product.is_available %}
+                    <td>Yes</td>
+                    {% else %}
+                    <td>No</td>
+                    {% endif %}
+                    <td class="w-fit">
+                        <a class="btn text-white bg-yellow-500" href="/admin/product/{{ product.id }}/edit">Edit</a>
+                        <a class="btn text-white bg-red-500" href="/admin/product/{{ product.id }}/delete">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock admin_content %}
+
+{% block admin_js %}
+    <script src="{{ url_for('static', filename='js/admin/products.js') }}"></script>
+{% endblock admin_js %}
