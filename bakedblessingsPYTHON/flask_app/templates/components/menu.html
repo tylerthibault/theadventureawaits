@@ -1,4 +1,4 @@
-<div class="bg-bb-color-s-l px-32">
+<div class="bg-bb-color-s-l px-32" id="menu">
     <h2 class="text-xl">Menu</h2>
     <div class="grid grid-cols-12 p-3">
         <div class="col-span-4">
@@ -6,7 +6,8 @@
                 {% for cat in all_categories %}
                 {% set outer_loop = loop.index0 %}
                 {% for product in cat.all_products %}
-                <div class="{{ 'bg-bb-color-a shadow-white' if outer_loop + loop.index0 == 0 else 'bg-white' }} w-[80%] text-center  cursor-pointer rounded shadow h-full flex justify-center items-center product-btn" target="product_{{ product.id }}">
+                <div class="{{ 'bg-bb-color-a shadow-white' if outer_loop + loop.index0 == 0 else 'bg-white' }} w-[80%] text-center  cursor-pointer rounded shadow h-full flex justify-center items-center product-btn p-3"
+                    target="product_{{ product.id }}">
                     <p>{{ product.name }}</p>
                 </div>
                 {% endfor %}
@@ -17,23 +18,32 @@
             {% for cat in all_categories %}
             {% set outer_loop = loop.index0 %}
             {% for product in cat.all_products %}
-            <div class="{{ '' if outer_loop + loop.index0 == 0 else 'hidden' }} flex flex-col items-center product-display min-h-[15em]"
-                id="product_{{ product.id }}">
-                <h3 class="text-2xl">{{ product.name }}</h3>
-                <div class="flex gap-3">
-                    <p><strong>Size: </strong>{{ product.size }} inches in diameter</p>
-                    <p><strong>qty: </strong>{{ product.qty }}</p>
-                    <p><strong>price: </strong>${{ product.price }}</p>
+            <div class="{{ '' if outer_loop + loop.index0 == 0 else 'hidden' }} min-h-[15em] flex flex-col items-center product-display"  id="product_{{ product.id }}">
+                <div class="flex flex-col items-center">
+                    <h3 class="text-2xl">{{ product.name }}</h3>
+                    <div class="flex gap-3">
+                        <p><strong>Size: </strong>{{ product.size }} inches in diameter</p>
+                        <p><strong>qty: </strong>{{ product.qty }}</p>
+                        <p><strong>price: </strong>${{ product.price }}</p>
+                    </div>
+                    <div class="flex gap-3">
+                        {% if product.is_available %}
+                        <p>{{ product.name }} is currently available! 😊</p>
+                        {% else %}
+                        <p>{{ product.name }} is currently not available 😭</p>
+                        {% endif %}
+                    </div>
+                    <p><strong>description:</strong></p>
+                    <p>{{ product.description }}</p>
                 </div>
-                <div class="flex gap-3">
-                    {% if product.is_available %}
-                    <p>{{ product.name }} is currently available! 😊</p>
+                <div class="mt-auto self-end mr-10 mb-3">
+                    {% if 'order_id' in session %}
+                    <a class="btn py-1 bg-green-500" href="">Add To Order</a>
+                    <a class="btn py-1 bg-red-500 text-white"  href="/order/{{ session['order_id'] }}/delete">Cancel Order</a>
                     {% else %}
-                    <p>{{ product.name }} is currently not available 😭</p>
+                    <a class="btn py-1 bg-yellow-500" href="/order/create">Create New Order</a>
                     {% endif %}
                 </div>
-                <p><strong>description:</strong></p>
-                <p>{{ product.description }}</p>
             </div>
             {% endfor %}
             {% endfor %}

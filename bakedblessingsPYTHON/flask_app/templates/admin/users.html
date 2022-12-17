@@ -1,0 +1,43 @@
+{% extends 'admin/base.html' %}
+
+{% block admin_title %}
+<h1>All Users</h1>
+{% endblock admin_title %}
+
+{% block admin_content %}
+<div class="flex justify-center">
+    <table class="w-10/12">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Email Verified</th>
+                <th>Level</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in all_users %}
+            <tr>
+                <td>{{ user.fullname }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone_num }}</td>
+                <td>
+                    {% if user.is_verified %}
+                        <span>Yes</span>
+                    {% else %}
+                        <span>No</span>
+                        <a class="btn bg-orange-500" href="">Resend Verification</a>
+                    {% endif %}
+                </td>
+                <td>{{ user.level }}</td>
+                <td>
+                    <a class="btn bg-yellow-500" href="/user/{{ user.id }}">View</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock admin_content %}

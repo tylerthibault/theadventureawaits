@@ -1,42 +1,47 @@
-<div>
-    <form action="/user/create" method="post">
-        <div class="form-field-col">
-            <label for="first_name">First Name</label>
-            <input type="text" name="first_name" id="first_name">
-            {% for message in get_flashed_messages(category_filter=['err_users_first_name']) %}
-            <p class="text-red-500">{{message}}</p>
-            {% endfor %}
-        </div>
-        <div class="form-field-col">
-            <label for="last_name">Last Name</label>
-            <input type="text" name="last_name" id="last_name">
-            {% for message in get_flashed_messages(category_filter=['err_users_last_name']) %}
-            <p class="text-red-500">{{message}}</p>
-            {% endfor %}
-        </div>
-        <div class="form-field-col">
-            <label for="email">Email</label>
-            <input type="text" name="email" id="email">
-            {% for message in get_flashed_messages(category_filter=['err_users_email']) %}
-            <p class="text-red-500">{{message}}</p>
-            {% endfor %}
-        </div>
-        <div class="form-field-col">
-            <label for="pw">Password</label>
-            <input type="text" name="pw" id="pw">
-            {% for message in get_flashed_messages(category_filter=['err_users_pw']) %}
-            <p class="text-red-500">{{message}}</p>
-            {% endfor %}
-        </div>
-        <div class="form-field-col">
-            <label for="confirm_pw">Confirm Password</label>
-            <input type="text" name="confirm_pw" id="confirm_pw">
-            {% for message in get_flashed_messages(category_filter=['err_users_confirm_pw']) %}
-            <p class="text-red-500">{{message}}</p>
-            {% endfor %}
-        </div>
-        <div class="form-field-col">
-            <button class="btn-success">Register</button>
-        </div>
-    </form>
-</div>
+<form action="/user/create" method="post">
+    <div class="form-field-col">
+        <label for="first_name">First Name</label>
+        <input type="text" name="first_name" id="first_name">
+        {% for message in get_flashed_messages(category_filter=['err_users_first_name']) %}
+        <p class="text-red-500">{{message}}</p>
+        {% endfor %}
+    </div>
+    <div class="form-field-col">
+        <label for="last_name">Last Name</label>
+        <input type="text" name="last_name" id="last_name">
+        {% for message in get_flashed_messages(category_filter=['err_users_last_name']) %}
+        <p class="text-red-500">{{message}}</p>
+        {% endfor %}
+    </div>
+    <div class="form-field-col">
+        <label for="email">Email</label>
+        <input type="text" name="email" id="email">
+        {% for message in get_flashed_messages(category_filter=['err_users_email']) %}
+        <p class="text-red-500">{{message}}</p>
+        {% endfor %}
+    </div>
+    <div class="form-field-col">
+        <label for="phone_num">Phone Number</label>
+        <input type="tel" name="phone_num" id="phone_num">
+        {% for message in get_flashed_messages(category_filter=['err_users_phone_num']) %}
+        <p class="text-red-500">{{message}}</p>
+        {% endfor %}
+    </div>
+    <div class="form-field-col">
+        <label for="pw">Password</label>
+        <input type="text" name="pw" id="pw">
+        {% for message in get_flashed_messages(category_filter=['err_users_pw']) %}
+        <p class="text-red-500">{{message}}</p>
+        {% endfor %}
+    </div>
+    <div class="form-field-col">
+        <label for="confirm_pw">Confirm Password</label>
+        <input type="text" name="confirm_pw" id="confirm_pw">
+        {% for message in get_flashed_messages(category_filter=['err_users_confirm_pw']) %}
+        <p class="text-red-500">{{message}}</p>
+        {% endfor %}
+    </div>
+    <div class="form-field-col">
+        <button class="btn-success">Register</button>
+    </div>
+</form>

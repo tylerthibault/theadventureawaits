@@ -1,6 +1,7 @@
 from flask_app import app, bcrypt
 from flask import render_template, redirect, session, request
 from flask_app.models import user_model
+from flask_app.config.helpers import login_required, admin_required
 
 
 @app.route('/user/login', methods=['POST'])
@@ -58,6 +59,14 @@ def user_edit(id):
     }
     return render_template('/pages/user/user_edit.html', **context)
 
+@app.route("/admin/users")
+@login_required
+@admin_required
+def all_users():
+    context = {
+        "all_users": user_model.User.get_all()
+    }
+    return render_template("admin/users.html", **context)
 
 # ********* UPDATE *********
 @app.route('/user/<int:id>/update', methods=['POST'])

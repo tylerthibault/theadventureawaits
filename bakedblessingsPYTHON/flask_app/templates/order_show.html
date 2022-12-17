@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mb-3 flex flex-col gap-3">
+    <div class="px-44">
+        {% with height=24 %}
+        {% include 'components/header.html' %}
+        {% endwith %}
+    </div>
+    {% include 'components/navbar.html' %}
+</div>
+<div class="grid grid-cols-2">
+    <div class="flex flex-col items-center">
+        <div class="mb-3 flex flex-col gap-2">
+            <h1 class="text-4xl underline">Your Cart</h1>
+            <p><strong>Confirmation Number: </strong><span class="shadow shadow-black rounded p-1 bg-yellow-500 text-white font-bold">{{ order.confirmation_num }}</span></p>
+        </div>
+        <div>
+            <table>
+                <tbody>
+                    {% for product in order.product_list %}
+                        <tr>
+                            <td class="border-none px-7 text-left">{{ product.name }}</td>
+                            <td class="border-none px-7 text-right">${{ product.price }}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td class="border-none px-7 text-left"><strong>Total</strong></td>
+                        <td class="border-none px-7 text-right"><strong>${{ order.total }}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- TODO add a button to confirm and once they hit confirm it changes the order status from inpro to ready -->
+    <div>
+    {% if not user %}
+        <p>Please create an account with us</p>
+        <div class="w-fit">
+            {% include 'forms/registration.html' %}
+        </div>
+    {% else %}
+        <p>Welcome back {{ user.fullname }}</p>
+        {% set address = user.get_address %}
+        {% if address %}
+            <p>do something</p>
+        {% else %}
+            <p class="bg-yellow-400 shadow px-3 w-fit my-3 rounded">Looks like we have no address on file</p>
+            {% include 'forms/address_form.html' %}
+        {% endif %}
+    {% endif %}
+    </div>
+</div>
+{% endblock content %}

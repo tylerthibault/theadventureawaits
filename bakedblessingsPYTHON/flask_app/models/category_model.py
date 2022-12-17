@@ -23,7 +23,6 @@ class Category(base_model.Base):
         
         all_categories = []
         for dict in results:
-            print(dict)
             product_data = {
                 **dict,
                 'id': dict['products.id'],

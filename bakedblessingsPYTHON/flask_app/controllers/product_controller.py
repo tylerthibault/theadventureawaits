@@ -11,7 +11,7 @@ from flask_app.config.helpers import admin_required, login_required
 def admin_products():
     context = {
         'all_products': product_model.Product.get_all_with_category(),
-        'all_categories': category_model.Category.get_all()
+        'all_categories': category_model.Category.get_all_with_products()
     }
     return render_template("admin/products.html", **context)
 

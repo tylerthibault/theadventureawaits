@@ -1,0 +1,50 @@
+{% extends 'admin/base.html' %}
+
+{% block admin_title %}
+<h1 class="text-4xl">All Orders</h1>
+{% endblock admin_title %}
+
+{% block admin_content %}
+<div class="mx-32">
+    <table>
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>User Name</th>
+                <th>User Email</th>
+                <th>User Phone Number</th>
+                <th>Confirmation Number</th>
+                <th>Amount of Items</th>
+                <th>Created At</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in all_orders %}
+            <tr>
+                <td>{{ order.user_id }}</td>
+                <td>{{ order.user.fullname }}</td>
+                <td>{{ order.user.email }}</td>
+                <td>{{ order.user.phone_num }}</td>
+                <td>{{ order.confirmation_num }}</td>
+                <td>{{ order.product_list | length }}</td>
+                <td>{{ order.created_at }}</td>
+                <td>
+                    <span>{{ order.status }}</span>
+                </td>
+                <td class="w-fit">
+                    <ul class="flex gap-1 justify-center">
+                        <li><a class="btn py-1 bg-slate-400" href="">Update Status</a></li>
+                        <li>|</li>
+                        <li><a class="btn py-1 bg-yellow-400" href="">View Order</a></li>
+                        <li>|</li>
+                        <li><a class="btn py-1 bg-red-400" href="/order/{{ order.id }}/delete">Delete Order</a></li>
+                    </ul>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock admin_content %}

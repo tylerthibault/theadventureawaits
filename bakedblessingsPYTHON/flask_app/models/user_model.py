@@ -1,6 +1,9 @@
-from flask_app.models import base_model
+from flask_app.models import base_model, address_model
 from flask import flash, session
+from flask_app.config.mysqlconnection import connectToMySQL
+from flask_app import DATABASE
 from flask_app import bcrypt
+
 import re
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
@@ -14,8 +17,21 @@ class User(base_model.Base):
         self.last_name = data['last_name']
         self.email = data['email']
         self.phone_num = data['phone_num']
-        self.pw = data['pw']
+        # self.pw = data['pw']
         self.level = data['level']
+        self.is_verified = data['is_verified']
+        self.fullname = f"{self.first_name.capitalize()} {self.last_name.capitalize()}"
+
+    @property 
+    def get_pw(self):
+        query = f"SELECT pw FROM users WHERE id = {self.id}"
+        result = connectToMySQL(DATABASE).query_db(query)
+        return result[0]['pw']
+
+
+    @property
+    def get_address(self):
+        return address_model.Address.get_one(user_id=self.id)
 
     @classmethod
     def login_validator(cls, **data):
@@ -35,7 +51,7 @@ class User(base_model.Base):
                 is_valid = False
                 flash("Invalid Credentials", "err_users_pw_login")
             else:
-                if not bcrypt.check_password_hash(potential_user.pw, data['pw_login']):
+                if not bcrypt.check_password_hash(potential_user.get_pw, data['pw_login']):
                     is_valid = False
                     flash("Invalid Credentials", "err_users_pw_login")
                 else:

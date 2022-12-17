@@ -12,10 +12,10 @@ function toggleMenuDisplay(el) {
     for (let btn of productBtns) {
         if (btn === el) {
             btn.classList.remove("bg-white")
-            btn.classList.add("bg-bb-color-a", "shadow-white")
+            btn.classList.add("bg-green-300", "shadow-white")
         } else {
             btn.classList.add("bg-white")
-            btn.classList.remove("bg-bb-color-a", "shadow-white")
+            btn.classList.remove("bg-green-300", "shadow-white")
         }
     }
 

@@ -118,10 +118,12 @@ class Base:
 
         for key in data:
             if key in cls.required_attributes:
-                print(f"checking key: {key} on table: {cls.table_name}")
-                if len(data[key]) < 1:
-                    print("not valid")
-                    is_valid = False
-                    flash("*Field is required", f"err_{cls.table_name}_{key}")
+                print(f"checking key: {key} -> ({data[key]}) on table: {cls.table_name}")
+                print(type(data[key]))
+                if type(data[key]) == str:
+                    if len(data[key]) < 1:
+                        print("not valid")
+                        is_valid = False
+                        flash("*Field is required", f"err_{cls.table_name}_{key}")
         
         return is_valid

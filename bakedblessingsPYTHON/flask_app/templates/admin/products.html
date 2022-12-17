@@ -27,28 +27,38 @@
                 <th>Size</th>
                 <th>Price</th>
                 <th>QTY</th>
+                <th>Has Description</th>
                 <th>Is Available</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            {% for product in all_products %}
-                <tr>
-                    <td>{{ product.name }}</td>
-                    <td>{{ product.category.name }}</td>
-                    <td>{{ product.size }}</td>
-                    <td>{{ product.price }}</td>
-                    <td>{{ product.qty }}</td>
-                    {% if product.is_available %}
-                    <td>Yes</td>
+            {% for cat in all_categories %}
+            {% for product in cat.all_products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ cat.name }}</td>
+                <td>{{ product.size }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.qty }}</td>
+                <td>
+                    {% if product.description | length > 2 %}
+                    <span>Yes</span>
                     {% else %}
-                    <td>No</td>
+                    <span>No</span>
                     {% endif %}
-                    <td class="w-fit">
-                        <a class="btn text-white bg-yellow-500" href="/admin/product/{{ product.id }}/edit">Edit</a>
-                        <a class="btn text-white bg-red-500" href="/admin/product/{{ product.id }}/delete">Delete</a>
-                    </td>
-                </tr>
+                </td>
+                {% if product.is_available %}
+                <td>Yes</td>
+                {% else %}
+                <td>No</td>
+                {% endif %}
+                <td class="w-fit">
+                    <a class="btn text-white bg-yellow-500" href="/admin/product/{{ product.id }}/edit">Edit</a>
+                    <a class="btn text-white bg-red-500" href="/admin/product/{{ product.id }}/delete">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
             {% endfor %}
         </tbody>
     </table>
@@ -56,5 +66,5 @@
 {% endblock admin_content %}
 
 {% block admin_js %}
-    <script src="{{ url_for('static', filename='js/admin/products.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin/products.js') }}"></script>
 {% endblock admin_js %}
