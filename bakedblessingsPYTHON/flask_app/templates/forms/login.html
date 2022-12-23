@@ -9,7 +9,7 @@
         </div>
         <div class="form-field-col">
             <label for="pw_login">Password</label>
-            <input type="text" name="pw_login" id="pw_login">
+            <input type="password" name="pw_login" id="pw_login">
             {% for message in get_flashed_messages(category_filter=['err_users_pw_login']) %}
             <p>{{message}}</p>
             {% endfor %}

@@ -5,46 +5,58 @@
 {% endblock admin_title %}
 
 {% block admin_content %}
-<div class="mx-32">
-    <table>
-        <thead>
-            <tr>
-                <th>User ID</th>
-                <th>User Name</th>
-                <th>User Email</th>
-                <th>User Phone Number</th>
-                <th>Confirmation Number</th>
-                <th>Amount of Items</th>
-                <th>Created At</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for order in all_orders %}
-            <tr>
-                <td>{{ order.user_id }}</td>
-                <td>{{ order.user.fullname }}</td>
-                <td>{{ order.user.email }}</td>
-                <td>{{ order.user.phone_num }}</td>
-                <td>{{ order.confirmation_num }}</td>
-                <td>{{ order.product_list | length }}</td>
-                <td>{{ order.created_at }}</td>
-                <td>
-                    <span>{{ order.status }}</span>
-                </td>
-                <td class="w-fit">
-                    <ul class="flex gap-1 justify-center">
-                        <li><a class="btn py-1 bg-slate-400" href="">Update Status</a></li>
-                        <li>|</li>
-                        <li><a class="btn py-1 bg-yellow-400" href="">View Order</a></li>
-                        <li>|</li>
-                        <li><a class="btn py-1 bg-red-400" href="/order/{{ order.id }}/delete">Delete Order</a></li>
-                    </ul>
-                </td>
-            </tr>
+<div class="mx-32 grid grid-cols-4 gap-10">
+    <div class="col-span-3">
+        <table>
+            <thead>
+                <tr>
+                    <th>User Name</th>
+                    <th>User Email</th>
+                    <th>User Phone Number</th>
+                    <th>Amount of Items</th>
+                    <th>Delivery Date</th>
+                    <th>Status</th>
+                    <th>New Message</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in all_orders %}
+                <tr>
+                    <td>{{ order.user.fullname }}</td>
+                    <td>{{ order.user.email }}</td>
+                    <td>{{ order.user.phone_num }}</td>
+                    <td>{{ order.product_list | length }}</td>
+                    <td>{{ order.delivery_date }}</td>
+                    <td>
+                        <span>{{ order.status }}</span>
+                    </td>
+                    <td>
+                        {% if order.public_note_read %}
+                        <span>No</span>
+                        {% else %}
+                        <span>Yes</span>
+
+                        {% endif %}
+                    </td>
+                    <td><a class="btn py-1 bg-yellow-400" href="/admin/order/{{ order.id }}">View</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="flex flex-col gap-3">
+        {% for date_group in sorted_orders %}
+        <div class="shadow shadow-black p-1 rounded-lg">
+            <p class="text-xl font-bold underline">{{ date_group.strftime("%a %d %b") }}</p>
+            {% for order in sorted_orders[date_group] %}
+            <p class="font-bold">{{ order.user.fullname }}</p>
+            {% for item in order.product_list %}
+            <p>{{ item.name }}</p>
             {% endfor %}
-        </tbody>
-    </table>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock admin_content %}

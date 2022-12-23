@@ -1,0 +1,14 @@
+<nav class="flex flex-col justify-center items-center gap-3 z-10 w-full mx-5">
+    <div class="hidden md:flex justify-center items-center w-full">
+        <div class="justify-self-center">
+            {% include 'components/navbar/menu.html' %}
+        </div>
+    </div>
+    <div class="md:hidden flex flex-col items-center w-full h-[2em]">
+        <p class="nav-btn">Navigation</p>
+        <div class="translate-y-[2em] opacity-0 duration-500 pointer-events-none w-full border-b-4 border-black" id="nav-menu">
+            {% include 'components/navbar/menu.html' %}
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
+</nav>

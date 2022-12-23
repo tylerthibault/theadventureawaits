@@ -10,7 +10,7 @@ EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 class User(base_model.Base):
     table_name = "users"
     attributes = ['first_name', 'last_name', 'email', 'phone_num', 'pw', 'level']
-    required_attributes = ['first_name', 'last_name', 'email', 'pw']
+    required_attributes = ['first_name', 'last_name', 'email', 'pw', 'phone_num']
     def __init__(self, data):
         super().__init__(data)
         self.first_name = data['first_name']

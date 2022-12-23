@@ -1,0 +1,36 @@
+<ul class="flex flex-col md:flex-row text-center p-3 md:p-0 gap-3 text-xl bg-white">
+    <li><a href="/">Home</a></li>
+    <li class="hidden md:inline-block">|</li>
+    {% if request.path.split("/")[1] != 'dashboard' %}
+    <!-- paths for normal pages -->
+    <li><a href="#aboutme">About Me</a></li>
+    <li class="hidden md:inline-block">|</li>
+    <li><a href="#menu">Menu</a></li>
+    <li class="hidden md:inline-block">|</li>
+
+    {% else %}
+
+    <li><a href="/dashboard/orders">My Orders</a></li>
+    <li class="hidden md:inline-block">|</li>
+    <li><a href="/dashboard/user/{{ user.id }}/edit">Settings</a></li>
+    <li class="hidden md:inline-block">|</li>
+
+    {% endif %}
+
+    {% if session['uuid'] %}
+
+    {% if request.path.split('/')[1] != 'dashboard' %}
+    <!-- If the page is not on the admin page -->
+    {% if session['level'] > 1 %}
+    <li><a href="/admin/dashboard">Dashboard</a></li>
+    {% else %}
+    <li><a href="/dashboard/orders">My Orders</a></li>
+    {% endif %}
+    <li class="hidden md:inline-block">|</li>
+    {% endif %}
+
+    <li><a href="/user/logout">Logout</a></li>
+    {% else %}
+    <li><a href="/user/new">Login Or Register</a></li>
+    {% endif %}
+</ul>

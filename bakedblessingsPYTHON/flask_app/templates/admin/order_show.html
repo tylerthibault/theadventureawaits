@@ -1,0 +1,135 @@
+{% extends 'admin/base.html' %}
+
+{% block admin_title %}
+<div class="flex flex-col items-center gap-3">
+    <h1>Order Number {{ order.id }}</h1>
+    <p class="text-xl bg-yellow-400 px-3 shadow shadow-black rounded">{{ order.confirmation_num }}</p>
+</div>
+{% endblock admin_title %}
+
+{% block admin_content %}
+<div class="mx-32">
+    {% set style = 'mb-3 shadow shadow-black p-7 rounded-xl flex flex-col gap-3 w-fit justify-center h-fit w-full' %}
+    <div>
+        <div class="my-5 flex justify-end gap-5">
+            <button class="bg-green-500 form-api-btn" target="order-form" method="post" api="/api/order/{{ order.id }}/update">Save Changes</button>
+            <button class="form-api-btn" target="notes-read-form" method="post" api="/api/order/{{ order.id }}/update" after-action="redirect" path="/admin/orders">Mark Notes as Read</button>
+            <form id="notes-read-form">
+                <input type="hidden" name="public_note_read" id="public_note_read" value="1">
+            </form>
+        </div>
+        <form id="order-form" method="post">
+            <div class="grid grid-cols-3 gap-5">
+                <!-- column 1 -->
+                <div>
+                    <!-- Order Information -->
+                    <div class="{{ style }}">
+                        <h2>Order Info</h2>
+                        <div>
+                            <label for="status">Status</label>
+                            <select class="input p-1" name="status" id="status">
+                                <option value="{{ order.status }}">{{ order.status.capitalize() }}</option>
+                                {% set status_list = ['order submitted','order in process', 'order ready', 'out for delivery', 'order completed'] %}
+                                {% for item in status_list %}
+                                {% if item != order.status %}
+                                <option value="{{ item }}">{{ item.capitalize() }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <label for="delivery_date">Delivery Date</label>
+                            <input type="date" name="delivery_date" id="delivery_date" value="{{ order.delivery_date }}">
+                        </div>
+                        <div>
+                            <label for="is_pickup">Delivery Type</label>
+                            <select class="input p-1" name="is_pickup" id="is_pickup">
+                                <option value="{{ order.is_pickup }}">{{ "Pick Up" if order.is_pickup else "Delivery" }}
+                                </option>
+                                {% if order.is_pickup %}
+                                <option value="0">Delivery</option>
+                                {% else %}
+                                <option value="1">Pick Up</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div>
+                            <label for="payment_type">Payment Type</label>
+                            <div class="flex gap-3">
+                                <div class="flex gap-3">
+                                    <input type="radio" name="payment_type" id="payment_type" value="venmo" {{ 'checked' if
+                                        order.payment_type=='venmo' }}>
+                                    <label for="payment_type">Venmo</label>
+                                </div>
+                                <div class="flex gap-3">
+                                    <input type="radio" name="payment_type" id="payment_type" value="paypal" {{ 'checked' if
+                                        order.payment_type=='paypal' }}>
+                                    <label for="payment_type">PayPal</label>
+                                </div>
+                                <div class="flex gap-3">
+                                    <input type="radio" name="payment_type" id="payment_type" value="cash" {{ 'checked' if
+                                        order.payment_type=='cash' }}>
+                                    <label for="payment_type">Cash / Check</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product List -->
+                    <div class="{{ style }}">
+                        <h2>Ordered Items</h2>
+                        <table>
+                            {% for product in order.product_list %}
+                            <tr>
+                                <td class="border-none text-left">{{ product.name }}</td>
+                                <td class="border-none text-right">${{ product.price }}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr class="border-t-2 border-black">
+                                <td class="font-bold border-none text-left">Total:</td>
+                                <td class="font-bold border-none text-right">${{ order.total }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <!-- column 2 -->
+                <div>
+                    <!-- User Information -->
+                    <div class="{{ style }}">
+                        <h2>User Info</h2>
+                        {% set user = order.get_user %}
+                        <div class="flex flex-col gap-3">
+                            <p>Name: {{ user.fullname }}</p>
+                            <p>Email: {{ user.email }}</p>
+                            <p>Email Verified: {{ 'Yes' if user.is_verified else 'No' }}</p>
+                            <p>Phone Number: {{ user.phone_num }}</p>
+                            <p>Level: {{ user.level }}</p>
+                            <p>Account Created On: {{ user.created_at }}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- column 3 -->
+                <div>
+                    <div class="{{ style }}">
+                        <h2>Public Notes</h2>
+                        <label for="notes"></label>
+                        <textarea class="text-left input" name="public_notes" id="public_notes" cols="30" rows="5">
+                            {{- order.public_notes -}}
+                        </textarea>
+                    </div>
+                    <div class="{{ style }}">
+                        <h2>Private Notes</h2>
+                        <label for="private_notes"></label>
+                        <textarea class="text-left input" name="private_notes" id="private_notes" cols="30" rows="5">
+                            {{- order.private_notes -}}
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- <p><strong>Status: </strong> {{ order.status }}</p>
+        <p><strong>Delivery Date: </strong> {{ order.delivery_date }}</p>
+        {% set address = order.get_address %}
+        <p><strong>address: </strong> {{ address.full if address else 'No address on file' }}</p> -->
+    </div>
+</div>
+{% endblock admin_content %}

@@ -1,0 +1,39 @@
+{
+	// Place your bakedblessingsPYTHON workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"api btn ": {
+        "scope": "html",
+        "prefix": "api-btn",
+        "body": [
+            "<a class=\"btn form-api-btn\" api=\"/api/${1:route_here}\" target=\"self\" method=\"get\" after-action=\"${2:after_action}\">${3:button_text}</a>"
+        ],
+        "description": "api-btn"
+    },
+	"form-card": {
+        "scope": "html",
+        "prefix": "form-card",
+        "body": [
+            "<div class=\"order-form-section\" step=\"${1:step_number}\">",
+            "\t<p>${2:Prompt}</p>",
+            "\t<div class=\"flex gap-3 my-3\">",
+            "\t\t<span class=\"btn bg-slate-300 order-form-navigation\" goto=\"${3:option_1}\">Yes</span>",
+            "\t\t<span class=\"btn bg-red-300 order-form-navigation\" goto=\"${4:option_2}\">No</span>",
+            "\t</div>",
+            "</div>"
+        ]
+    }
+}

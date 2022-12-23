@@ -1,0 +1,73 @@
+<form class="w-full" action="/order/{{ order.id }}/update" method="post">
+    <input type="hidden" name="status" id="status" value="submitted">
+    <div class="mb-3 shadow shadow-black my-3 rounded-xl p-3">
+        <h3 class="text-xl">What date do you want your order?</h3>
+        <label for="delivery_date">Delivery Date</label>
+        <input type="date" name="delivery_date" id="delivery_date">
+    </div>
+    <div class="mb-3 shadow shadow-black my-3 rounded-xl p-3">
+        <h3 class="text-xl">Do you want to pick up your order or have it delivered?</h3>
+        <div class="flex justify-evenly">
+            <div class="flex gap-1">
+                <input class="radio-pickup" type="radio" name="is_pickup" value="1" checked>
+                <span>Picked Up</span>
+            </div>
+            <div class="flex gap-1">
+                <input class="radio-pickup" type="radio" name="is_pickup" value="0">
+                <span>Delivered</span>
+            </div>
+        </div>
+    </div>
+    <div class="hidden mb-3 shadow shadow-black my-3 rounded-xl p-3 flex flex-col gap-3 " id="delivery_address">
+        <h3 class="text-xl">Delivery Address</h3>
+        {% set address = user.get_address %}
+        {% if address %}
+        <p>Here is the address we have on file.</p>
+        {% else %}
+        <p>Looks like you do not have an address on file.</p>
+        {% endif %}
+        <div class="flex justify-between gap-5">
+            <label for="street">Street</label>
+            <input type="text" name="street" id="street" value="{{ address.street }}">
+        </div>
+        <div class="flex justify-between gap-5">
+            <label for="city">City</label>
+            <input type="text" name="city" id="city" value="{{ address.city }}">
+        </div>
+        <div class="flex justify-between gap-5">
+            <label for="State">State</label>
+            <input type="text" name="State" id="State" value="{{ address.state }}">
+        </div>
+        <div class="flex justify-between gap-5">
+            <label for="zip">Zip Code</label>
+            <input type="text" name="zip" id="zip" value="{{ address.zip }}">
+        </div>
+        <div>
+            <input type="checkbox" name="is_primary">
+            <label for="is_primary">Make this your primary address?</label>
+        </div>
+    </div>
+    <div class="mb-3 shadow shadow-black my-3 rounded-xl p-3">
+        <h3 class="text-xl">Payment Options</h3>
+        <div class="flex gap-3">
+            <div>
+                <input type="radio" name="payment_type" value="venmo">
+                <label for="payment_type">Venmo</label>
+            </div>
+            <div>
+                <input type="radio" name="payment_type" value="paypal">
+                <label for="payment_type">Paypal</label>
+            </div>
+            <div>
+                <input type="radio" name="payment_type" value="cash">
+                <label for="payment_type">Cash / Check</label>
+            </div>
+        </div>
+    </div>
+    <div class="flex justify-end">
+        <button class="bg-green-400">Submit Order</button>
+    </div>
+</form>
+
+
+<script src="{{ url_for('static', filename='js/order_form.js') }}"></script>

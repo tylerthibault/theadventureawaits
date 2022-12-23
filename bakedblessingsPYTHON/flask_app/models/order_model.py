@@ -1,29 +1,46 @@
-from flask_app.models import base_model, product_model, user_model
+from flask_app.models import base_model, product_model, user_model, address_model
 from flask import flash, session
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask_app import DATABASE
 
 class Order(base_model.Base):
     table_name = "orders"
-    attributes = ['user_id', 'confirmation_num']
+    attributes = ['user_id', 'delivery_date', 'address_id', 'status', 'public_notes', 'public_note_read', 'private_notes', 'is_pickup', 'payment_type']
     required_attributes = ['user_id']
 
     def __init__(self, data):
         super().__init__(data)
         self.user_id = data['user_id']
-        self.confirmation_num = data['confirmation_num']
         self.status = data['status']
+        self.delivery_date = data['delivery_date']
+        self.address_id = data['address_id']
+        self.public_notes = data['public_notes']
+        self.public_note_read = data['public_note_read']
+        self.private_notes = data['private_notes']
+        self.is_pickup = data['is_pickup']
+        self.payment_type = data['payment_type']
+
+    @property
+    def get_address(self):
+        return address_model.Address.get_one(id = self.address_id)
+    
+    @property 
+    def get_user(self):
+        return user_model.User.get_one(id = self.user_id)
 
     @classmethod
-    def get_all(cls):
-        query = "SELECT * FROM orders LEFT JOIN order_contents ON order_contents.order_id = orders.id LEFT JOIN products ON order_contents.product_id = products.id LEFT JOIN users ON orders.user_id = users.id;"
-        results = connectToMySQL(DATABASE).query_db(query)
+    def get_all(cls, data=None):
+        if data:
+            query = "SELECT * FROM orders LEFT JOIN order_contents ON order_contents.order_id = orders.id LEFT JOIN products ON order_contents.product_id = products.id LEFT JOIN users ON orders.user_id = users.id where user_id = %(user_id)s;"
+            results = connectToMySQL(DATABASE).query_db(query, data)
+        else:
+            query = "SELECT * FROM orders LEFT JOIN order_contents ON order_contents.order_id = orders.id LEFT JOIN products ON order_contents.product_id = products.id LEFT JOIN users ON orders.user_id = users.id;"
+            results = connectToMySQL(DATABASE).query_db(query)
         if not results:
             return []
         all_orders = []
         orders_processed = []
         product_list = []
-        print(results)
         for dict in results:
             if dict['id'] in orders_processed:
                 order_idx = orders_processed.index(dict['id'])
@@ -51,18 +68,12 @@ class Order(base_model.Base):
             
             if dict['id'] in orders_processed:
                 order.product_list.append(product)
-                print("updated order")
             else:
                 product_list.append(product)
                 order.product_list = product_list
                 orders_processed.append(dict['id'])
                 all_orders.append(order)
-                print("added new order")
         return all_orders
-
-
-
-
 
     @classmethod
     def get_one(cls, data):

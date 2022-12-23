@@ -27,17 +27,23 @@
 </head>
 
 <body>
-    <div class="flex justify-center mt-3">
+    <div>
+        {% block header %}
+
+        {% endblock header %}
+    </div>
+    <div class="flex justify-center mt-3 w-full">
         {% block navbar %}
-        
+
         {% endblock navbar %}
     </div>
 
     {% block content %}
-        
+
     {% endblock content %}
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/form_api.js') }}"></script>
     {% block js %}
 
     {% endblock js %}

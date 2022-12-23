@@ -5,8 +5,9 @@ from flask_app import DATABASE
 
 class Product(base_model.Base):
     table_name = "products"
-    attributes = ['name', 'size', 'description', 'price', 'is_available', 'qty', 'category_id']
+    attributes = ['name', 'size', 'description', 'price', 'is_available', 'qty', 'category_id', 'img_url']
     required_attributes = ['name', 'price']
+    
     def __init__(self, data):
         super().__init__(data)
         self.name = data['name']
@@ -16,6 +17,7 @@ class Product(base_model.Base):
         self.is_available = data['is_available']
         self.qty = data['qty']
         self.category_id = data['category_id']
+        self.img_url = data['img_url']
 
     @property
     def get_category(self):

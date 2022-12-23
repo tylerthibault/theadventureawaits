@@ -1,29 +1,38 @@
-<div class="md:px-10 lg:px-32" id="menu">
+<div class="" id="menu">
     <div class="flex flex-col gap-3 items-center my-5">
-        <h2 class="text-2xl">Menu 2</h2>
-        <p>--- Tag Line Here ---</p>
+        <h2 class="text-4xl ">Menu</h2>
+        <p>--- Baked with love and patience ---</p>
         {% if 'uuid' in session %}
         {% if 'order_id' not in session %}
         <a class="btn bg-yellow-500 text-xl" href="/order/create">Create New Order</a>
         {% else %}
-        <a class="btn bg-red-500 text-white text-xl" href="/order/{{ session['order_id'] }}/delete">Cancel Order</a>
+        <div class="flex gap-3">
+            <a class="btn bg-red-500 text-white text-xl" href="/order/{{ session['order_id'] }}/delete">Cancel Order</a>
+            <a class="btn bg-slate-500 text-white text-xl" href="/order/{{ session['order_id'] }}">Go To Cart</a>
+        </div>
         {% endif %}
         {% else %}
         <p>Please <a class="btn bg-slate-400 text-white" href="/user/new">Login or Register</a> to create an order</p>
         {% endif %}
     </div>
-    <div class="flex justify-center gap-10 flex-wrap">
+    <div class="flex justify-center gap-5 flex-wrap">
         {% for cat in all_categories %}
         {% for product in cat.all_products %}
-        <div class="w-1/2 md:w-1/3 lg:w-1/4 flex flex-col h-[15em]">
+        <div class="md:w-1/2 md:w-1/3 flex flex-col min-h-[15em]">
             <div class="flex justify-between border-b-4 border-black">
                 <h3 class="font-bold text-xl">{{ product.name }}</h3>
                 <span class="font-bold text-xl font-bb-font-heading">${{ product.price }}</span>
             </div>
-            <div class="flex flex-col md:grid grid-cols-6 gap-1 h-full">
+            <div class="flex flex-col lg:grid grid-cols-6 gap-1 h-full w-full max-w-md">
+                {% if product.img_url %}
+                <div class="col-span-2 flex justify-center items-center w-full h-full max-h-64 max-w-md bg-gray-300">
+                    <img class="h-full w-full object-cover " src="{{ product.img_url }}" alt="product image">
+                </div>
+                {% else %}
                 <div class="col-span-2 flex justify-center items-center w-full h-full bg-gray-300">
                     <p>image</p>
                 </div>
+                {% endif %}
                 <div class="col-span-4 flex flex-col h-full">
                     <div class="flex gap-3">
                         <p><strong>Size</strong> (inches): {{ product.size }}</p>
@@ -41,7 +50,7 @@
                     {% if product.is_available %}
                     {% if 'order_id' in session %}
                     <div class="flex justify-end mt-auto">
-                        <a class="btn py-1 bg-green-500" href="/cart/{{ product.id }}/create">Add To Order</a>
+                        <a class="btn bg-green-500 form-api-btn" api="/api/order_content/{{ product.id }}/create" target="self" method="get" after-action="updateCart">Add To Order</a>
                     </div>
                     {% endif %}
                     {% endif %}

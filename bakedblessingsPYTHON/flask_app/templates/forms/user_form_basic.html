@@ -1,0 +1,26 @@
+
+<div class="flex flex-col gap-3 shadow shadow-black rounded-lg p-5 w-full">
+    <h2 class="text-xl">User Settings</h2>
+    <form action="/user/{{ user.id }}/update" method="post" class="w-fit">
+        <div class="mb-3 flex justify-between gap-10">
+            <label for="first_name">First Name</label>
+            <input type="text" name="first_name" id="first_name" value="{{ user.first_name }}">
+        </div>
+        <div class="mb-3 flex justify-between">
+            <label for="last_name">Last Name</label>
+            <input type="text" name="last_name" id="last_name" value="{{ user.last_name }}">
+        </div>
+        <div class="mb-3 flex justify-between">
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email" value="{{ user.email }}">
+        </div>
+        <div class="mb-3 flex justify-between">
+            <label for="phone_num">Phone Number</label>
+            <input type="text" name="phone_num" id="phone_num" value="{{ user.phone_num }}">
+        </div>
+        <div class="flex justify-end">
+            <button class="bg-green-500">Update Information</button>
+        </div>
+    </form>
+</div>
+

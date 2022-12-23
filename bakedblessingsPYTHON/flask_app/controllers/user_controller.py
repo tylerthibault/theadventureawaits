@@ -1,7 +1,7 @@
 from flask_app import app, bcrypt
 from flask import render_template, redirect, session, request
-from flask_app.models import user_model
-from flask_app.config.helpers import login_required, admin_required
+from flask_app.models import user_model, order_model
+from flask_app.config.helpers import login_required, admin_required, page_back
 
 
 @app.route('/user/login', methods=['POST'])
@@ -12,19 +12,20 @@ def user_login():
     if not user_model.User.login_validator(**data):
         return redirect('/user/new')
     
-    if session['level'] > 1:
-        return redirect('/admin/dashboard')
-    return redirect('/dashboard')
+    return redirect('/')
 
 @app.route('/user/logout')
 def user_logout():
     del session['uuid']
+    if 'order_id' in session:
+        order_model.Order.delete_one(id=session['order_id'])
+        del session['order_id']
     return redirect('/')
 
 # ********* CREATE *********
 @app.route('/user/new')
 def user_new():
-    return render_template('/user_new.html')
+    return render_template('pages/user_new.html')
 
 
 @app.route('/user/create', methods=['POST'])
@@ -45,19 +46,19 @@ def user_create():
     return redirect('/')
 
 # ********* READ *********
-@app.route('/user')
-def user_show():
-    context = {
-        'all_users' :  user_model.User.get_all()
-    }
-    return render_template('/pages/user/user_show.html', **context)
+# @app.route('/user')
+# def user_show():
+#     context = {
+#         'all_users' :  user_model.User.get_all()
+#     }
+#     return render_template('/pages/user/user_show.html', **context)
 
-@app.route('/user/<int:id>/edit')
+@app.route('/dashboard/user/<int:id>/edit')
 def user_edit(id):
     context = {
         'user' :  user_model.User.get_one(id=id)
     }
-    return render_template('/pages/user/user_edit.html', **context)
+    return render_template('/pages/user_edit.html', **context)
 
 @app.route("/admin/users")
 @login_required
@@ -71,6 +72,10 @@ def all_users():
 # ********* UPDATE *********
 @app.route('/user/<int:id>/update', methods=['POST'])
 def user_update(id):
+    if id != session['uuid']:
+        last_page = page_back()
+        return redirect(last_page)
+
     data = {
         **request.form,
     }

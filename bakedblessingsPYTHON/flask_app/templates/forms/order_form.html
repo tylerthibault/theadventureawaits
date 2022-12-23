@@ -1,0 +1,60 @@
+{% if not order.delivery_date %}
+<div class="flex flex-col items-center w-fit shadow shadow-black my-3 p-3 rounded-xl order-form-section" step="1">
+    <p>Pick a date you want to recieve your order</p>
+    <form id="delivery_date-form">
+        <input type="date" name="delivery_date" id="delivery_date">
+    </form>
+    <a class="btn form-api-btn order-form-navigation" api="/api/order/{{order.id}}/date_checker" target="delivery_date-form" method="get"  after-action="refresh">Check Date</a>
+</div>
+{% else %}
+<div class="flex flex-col items-center w-fit shadow shadow-black my-3 p-3 rounded-xl order-form-section" step="2">
+    <p>Your delievery date is set for {{ order.delivery_date }}. Is that correct?</p>
+    <div class="flex gap-3 my-3">
+        <span class="btn bg-slate-300 order-form-navigation" goto="3">Yes</span>
+        <span class="btn bg-red-300 order-form-navigation" goto="1">No</span>
+    </div>
+</div>
+{% endif %}
+
+<!-- STEP 1 -->
+<div class="hidden flex flex-col items-center w-fit shadow shadow-black my-3 p-3 rounded-xl order-form-section" step="1">
+    <p>Pick a date you want to recieve your order</p>
+    <form id="delivery_date-form">
+        <input type="date" name="delivery_date" id="delivery_date">
+    </form>
+    <a class="btn form-api-btn order-form-navigation" api="/api/order/{{order.id}}/date_checker" target="delivery_date-form" method="get"  after-action="refresh">Check Date</a>
+</div>
+
+<!-- STEP 2 -->
+<div class="hidden flex flex-col items-center w-fit shadow shadow-black my-3 p-3 rounded-xl order-form-section" step="2">
+    <p>Your delievery date is set for {{ order.delivery_date }}. Is that correct?</p>
+    <div class="flex gap-3 my-3">
+        <span class="btn bg-slate-300 order-form-navigation" goto="3">No</span>
+        <span class="btn bg-red-300 order-form-navigation" goto="3">Yes</span>
+    </div>
+</div>
+
+<!-- STEP 3 -->
+<div class="hidden flex flex-col items-center w-fit shadow shadow-black my-3 p-3 rounded-xl order-form-section" step="3">
+    <p>Do you want this order to be delivery or will you pick it up?</p>
+    <p>The delivery fee is 50 cents per mile traveled.</p>
+    <div class="flex gap-3 my-3">
+        <form class="flex flex-col gap-3" id="is_pickup-form">
+            <div class="flex gap-3">
+                <input type="radio" name="is_pickup" value="1" checked>
+                <label for="is_pickup">I will Pick up my Order</label>
+            </div>
+            <div class="flex gap-3">
+                <input type="radio" name="is_pickup" value="0">
+                <label for="is_pickup">I want you to delivery it to me</label>
+            </div>
+        </form>
+    </div>
+    <div>
+        <span class="btn bg-red-300 order-form-navigation" api="/api/order/{{order.id}}/update" target="is_pickup-form" goto="2">Back</span>
+        <span class="btn bg-slate-300 order-form-navigation" goto="4">Next</span>
+    </div>
+</div>
+
+
+<script src="{{ url_for('static', filename='js/order_form.js') }}"></script>

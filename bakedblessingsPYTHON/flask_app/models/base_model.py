@@ -62,9 +62,7 @@ class Base:
 
     @classmethod
     def get_one(cls, **data):
-        print(data)
         valid_attrs = cls.get_valid_attributes(cls.__dict__['attributes'], data)
-        # info = cls.sanitize(valid_attrs, **data)
         where_data = cls.generate_where(**data)
         query = f"SELECT * FROM {cls.table_name} WHERE {where_data};"
         result = connectToMySQL(DATABASE).query_db(query, data)
@@ -75,9 +73,15 @@ class Base:
         return cls(result[0])
 
     @classmethod
-    def get_all(cls):
-        query = f"SELECT * FROM {cls.table_name};"
-        results = connectToMySQL(DATABASE).query_db(query)
+    def get_all(cls, data=None):
+        if data == None:
+            query = f"SELECT * FROM {cls.table_name};"
+            results = connectToMySQL(DATABASE).query_db(query)
+        else:
+            where_data = cls.generate_where(**data)
+            query = f"SELECT * FROM {cls.table_name} WHERE {where_data};"
+            results = connectToMySQL(DATABASE).query_db(query, data)
+
         if not results:
             return []
         all_items = []

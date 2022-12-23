@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<div class="md:mx-16 mt-5">
+    {% with height=16 %}
+        {% include 'components/header.html' %}
+    {% endwith %}
+</div>
+{% endblock header %}
+
+{% block navbar %}
+{% include 'components/navbar/navbar.html' %}
+{% endblock navbar %}
+
+{% block content %}
+<div class="md:mx-32 grid grid-cols-4">
+
+
+</div>
+{% endblock content %}

@@ -1,0 +1,21 @@
+
+<div class="flex flex-col gap-3 shadow shadow-black rounded-lg p-5 w-full">
+    <h2 class="text-xl">Update Password</h2>
+    <form action="/user/{{ user.id }}/update" method="post" class="w-fit">
+        <div class="mb-3 flex justify-between gap-10">
+            <label for="old_pw">Old Password</label>
+            <input type="password" name="old_pw" id="old_pw">
+        </div>
+        <div class="mb-3 flex justify-between gap-10">
+            <label for="pw">New Password</label>
+            <input type="password" name="pw" id="pw">
+        </div>
+        <div class="mb-3 flex justify-between gap-10">
+            <label for="confirm_pw">Confirm New Password</label>
+            <input type="password" name="confirm_pw" id="confirm_pw">
+        </div>
+        <div class="flex justify-end">
+            <button class="bg-green-500">Update Password</button>
+        </div>
+    </form>
+</div>

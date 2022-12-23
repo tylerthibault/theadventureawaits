@@ -8,6 +8,8 @@ flask = "*"
 pymysql = "*"
 flask-bcrypt = "*"
 livereload = "*"
+requests = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

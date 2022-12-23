@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% set style = 'mx-5 md:mx-10 lg:mx-32 m-2 md:mt-10 flex flex-col gap-10' %}
+
+{% block content %}
+<div class="{{ style }}">
+    {% with height=32 %}
+    {% include 'components/header.html' %}
+    {% endwith %}
+</div>
+<div class="py-5 bg-white sticky top-0 border-b-4 border-black shadow-b shadow-black">
+    <div class="flex justify-center ">
+        {% include 'components/navbar/navbar.html' %}
+        <div class="md:block absolute right-4 flex items-center gap-2">
+            {% if 'order_id' in session %}
+            <span class="bg-yellow-500 px-[0.5em] rounded-full" id="cart-count">{{ order.product_list | length }}</span>
+            <a href="/order/{{ session['order_id'] }}" class="text-xl" id="cart-icon">CART</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div>
+    {% include 'components/mission.html' %}
+</div>
+<div class="{{ style }}">
+    {% include 'components/why.html' %}
+    {% include 'components/menu2.html' %}
+    {% include 'components/history.html' %}
+    {% include 'components/about_me.html' %}
+</div>
+
+{% include 'components/footer.html' %}
+
+{% endblock content %}
