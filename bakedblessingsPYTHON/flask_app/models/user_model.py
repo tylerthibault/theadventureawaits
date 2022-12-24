@@ -31,7 +31,7 @@ class User(base_model.Base):
 
     @property
     def get_address(self):
-        return address_model.Address.get_one(user_id=self.id)
+        return address_model.Address.get(user_id=self.id)
 
     @classmethod
     def login_validator(cls, **data):
@@ -45,7 +45,7 @@ class User(base_model.Base):
             is_valid = False
 
         if is_valid:
-            potential_user = cls.get_one(email=data['email_login'])
+            potential_user = cls.get(email=data['email_login'])
             print(potential_user)
             if not potential_user:
                 is_valid = False
@@ -59,5 +59,21 @@ class User(base_model.Base):
                     session['level'] = potential_user.level
         
         return is_valid
+
+    @staticmethod
+    def update_pw(data):
+        is_valid = True
+
+        current_user = User.get(id=session['uuid'])
+        if not bcrypt.check_password_hash(current_user.get_pw, data['old_pw']):
+            flash("Old Password do not match", "err_user_pw")
+            is_valid = False
+
+        if data['pw'] != data['confirm_pw']:
+            flash("New Passwords do not match", "err_user_pw_confirm")
+            is_valid = False
+
+        return is_valid
+
 
 

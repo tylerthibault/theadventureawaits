@@ -5,7 +5,7 @@ from flask_app import DATABASE
 
 class Order(base_model.Base):
     table_name = "orders"
-    attributes = ['user_id', 'delivery_date', 'address_id', 'status', 'public_notes', 'public_note_read', 'private_notes', 'is_pickup', 'payment_type']
+    attributes = ['user_id', 'delivery_date', 'address_id', 'status', 'public_notes', 'has_paid', 'public_note_read', 'private_notes', 'is_pickup', 'payment_type']
     required_attributes = ['user_id']
 
     def __init__(self, data):
@@ -19,14 +19,15 @@ class Order(base_model.Base):
         self.private_notes = data['private_notes']
         self.is_pickup = data['is_pickup']
         self.payment_type = data['payment_type']
+        self.has_paid = data['has_paid']
 
     @property
     def get_address(self):
-        return address_model.Address.get_one(id = self.address_id)
+        return address_model.Address.get(id = self.address_id)
     
     @property 
     def get_user(self):
-        return user_model.User.get_one(id = self.user_id)
+        return user_model.User.get(id = self.user_id)
 
     @classmethod
     def get_all(cls, data=None):

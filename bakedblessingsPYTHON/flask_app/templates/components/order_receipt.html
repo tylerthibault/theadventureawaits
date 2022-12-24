@@ -1,0 +1,27 @@
+<div class="flex flex-col">
+            <div class="mb-3 flex flex-col gap-2">
+                <h1 class="text-4xl underline">Your Cart</h1>
+                <p><strong>Confirmation Number: </strong><span
+                        class="shadow shadow-black rounded p-1 bg-accent-mustard text-white font-bold">{{ order.id }}</span>
+                </p>
+            </div>
+            <div class="w-fit">
+                <table>
+                    <tbody>
+                        {% for product in order.product_list %}
+                        <tr>
+                            <td class="border-none px-3 text-left">{{ product.name }}</td>
+                            <td class="border-none px-3 text-right">${{ product.price }}</td>
+                            <td class="border-none px-3 text-left text-xs">
+                                <a href="/order_content/{{ product.id }}/{{ order.id }}/delete">❌</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        <tr class="border-t-2 border-black pt-3">
+                            <td class="border-none px-3 text-left"><strong>Total</strong></td>
+                            <td class="border-none px-3 text-right"><strong>${{ order.total }}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>

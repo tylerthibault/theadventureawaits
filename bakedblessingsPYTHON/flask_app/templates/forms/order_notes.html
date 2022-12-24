@@ -1,0 +1,15 @@
+<div class="shadow shadow-black p-3 rounded text-center">
+    <form action="/order/{{ order.id }}/update" method="post">
+        <input type="hidden" name="public_note_read" id="public_note_read" value="0">
+        <div>
+            <textarea class="input w-full" name="public_notes" id="public_notes" cols="30" rows="10">
+                {{- order.public_notes -}}
+            </textarea>
+        </div>
+        <button class="btn-success">Update Notes</button>
+    </form>
+</div>
+<div class="mt-5 text-center">
+    <p>Thank you, your order has been submitted! If you would like to make any changes please contact the baker at
+        253-205-6889</p>
+</div>

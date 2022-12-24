@@ -47,7 +47,7 @@ def api_order_content_create(product_id):
 # @app.route('/order_content/<int:id>/edit')
 # def order_content_edit(id):
 #     context = {
-#         'order_content' :  order_contents_model.OrderContent.get_one(id=id)
+#         'order_content' :  order_contents_model.OrderContent.get(id=id)
 #     }
 #     return render_template('/pages/order_content/order_content_edit.html', **context)
 

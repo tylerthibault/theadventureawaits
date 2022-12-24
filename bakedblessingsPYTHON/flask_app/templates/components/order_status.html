@@ -1,0 +1,21 @@
+<div class="hidden md:flex flex-col h-full">
+    {% for stat in order_status_list %}
+    {% if order.status == stat %}
+    {% if order.status == 'order completed' %}
+    <p class="mt-auto capitalize font-bold shadow shadow-black btn-select">{{ stat }}</p>
+    {% else %}
+    <p class="mt-auto capitalize font-bold shadow shadow-black bg-accent-mustard">{{ stat }}</p>
+    {% endif %}
+    {% else %}
+    <p class="mt-auto capitalize">{{ stat }}</p>
+    {% endif %}
+    {% endfor %}
+</div>
+
+<div class="md:hidden">
+    {% if order.status == 'order completed' %}
+    <p class="mt-auto capitalize font-bold shadow shadow-black btn-select">{{ order.status }}</p>
+    {% else %}
+    <p class="mt-auto capitalize font-bold shadow shadow-black bg-accent-mustard">{{ order.status }}</p>
+    {% endif %}
+</div>

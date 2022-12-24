@@ -33,7 +33,7 @@ def address_create():
 # @app.route('/address/<int:id>/edit')
 # def address_edit(id):
 #     context = {
-#         'address' :  address_model.Address.get_one(id=id)
+#         'address' :  address_model.Address.get(id=id)
 #     }
 #     return render_template('/pages/address/address_edit.html', **context)
 

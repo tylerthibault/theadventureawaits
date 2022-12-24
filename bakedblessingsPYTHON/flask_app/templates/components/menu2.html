@@ -4,11 +4,11 @@
         <p>--- Baked with love and patience ---</p>
         {% if 'uuid' in session %}
         {% if 'order_id' not in session %}
-        <a class="btn bg-yellow-500 text-xl" href="/order/create">Create New Order</a>
+        <a class="btn bg-accent-mustard text-xl" href="/order/create">Create New Order</a>
         {% else %}
         <div class="flex gap-3">
-            <a class="btn bg-red-500 text-white text-xl" href="/order/{{ session['order_id'] }}/delete">Cancel Order</a>
-            <a class="btn bg-slate-500 text-white text-xl" href="/order/{{ session['order_id'] }}">Go To Cart</a>
+            <a class="btn btn-danger text-white text-xl" href="/order/{{ session['order_id'] }}/delete">Cancel Order</a>
+            <a class="btn btn-success text-xl" href="/dashboard/order/{{ session['order_id'] }}">Go To Cart</a>
         </div>
         {% endif %}
         {% else %}
@@ -50,7 +50,7 @@
                     {% if product.is_available %}
                     {% if 'order_id' in session %}
                     <div class="flex justify-end mt-auto">
-                        <a class="btn bg-green-500 form-api-btn" api="/api/order_content/{{ product.id }}/create" target="self" method="get" after-action="updateCart">Add To Order</a>
+                        <a class="btn btn-select form-api-btn" api="/api/order_content/{{ product.id }}/create" target="self" method="get" after-action="updateCart">Add To Order</a>
                     </div>
                     {% endif %}
                     {% endif %}

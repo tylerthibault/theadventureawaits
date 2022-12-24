@@ -1,4 +1,4 @@
-<div class="bg-bb-color-s-l px-32" id="menu">
+<div class="bg-bb-c-secondary-light px-32" id="menu">
     <h2 class="text-xl">Menu</h2>
     <div class="grid grid-cols-12 p-3">
         <div class="col-span-4">
@@ -6,7 +6,7 @@
                 {% for cat in all_categories %}
                 {% set outer_loop = loop.index0 %}
                 {% for product in cat.all_products %}
-                <div class="{{ 'bg-bb-color-a shadow-white' if outer_loop + loop.index0 == 0 else 'bg-white' }} w-[80%] text-center  cursor-pointer rounded shadow h-full flex justify-center items-center product-btn p-3"
+                <div class="{{ 'bg-bb-c-accent-1 shadow-white' if outer_loop + loop.index0 == 0 else 'bg-white' }} w-[80%] text-center  cursor-pointer rounded shadow h-full flex justify-center items-center product-btn p-3"
                     target="product_{{ product.id }}">
                     <p>{{ product.name }}</p>
                 </div>
@@ -38,10 +38,10 @@
                 </div>
                 <div class="mt-auto self-end mr-10 mb-3">
                     {% if 'order_id' in session %}
-                    <a class="btn py-1 bg-green-500" href="">Add To Order</a>
-                    <a class="btn py-1 bg-red-500 text-white"  href="/order/{{ session['order_id'] }}/delete">Cancel Order</a>
+                    <a class="btn py-1 btn-select" href="">Add To Order</a>
+                    <a class="btn py-1 btn-danger text-white"  href="/order/{{ session['order_id'] }}/delete">Cancel Order</a>
                     {% else %}
-                    <a class="btn py-1 bg-yellow-500" href="/order/create">Create New Order</a>
+                    <a class="btn py-1 bg-accent-mustard" href="/order/create">Create New Order</a>
                     {% endif %}
                 </div>
             </div>

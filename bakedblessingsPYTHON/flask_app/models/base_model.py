@@ -61,7 +61,7 @@ class Base:
         
 
     @classmethod
-    def get_one(cls, **data):
+    def get(cls, **data):
         valid_attrs = cls.get_valid_attributes(cls.__dict__['attributes'], data)
         where_data = cls.generate_where(**data)
         query = f"SELECT * FROM {cls.table_name} WHERE {where_data};"
@@ -69,7 +69,12 @@ class Base:
 
         if not result:
             return False
-        
+        if len(result) > 1:
+            list = []
+            for item in result:
+                list.append(cls(item))
+            return list
+            
         return cls(result[0])
 
     @classmethod

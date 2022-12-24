@@ -20,7 +20,7 @@ def index():
 def dashboard():
     return redirect("/dashboard/orders")
     # context = {
-    #     'user': user_model.User.get_one(id=session['uuid'])
+    #     'user': user_model.User.get(id=session['uuid'])
     # }
     # return render_template("pages/dashboard.html", **context)
 
@@ -31,3 +31,4 @@ def dashboard():
 def admin_dashboard():
     return redirect("/admin/orders")
     return render_template("admin/dashboard.html")
+

@@ -13,7 +13,7 @@
         {% include 'components/navbar/navbar.html' %}
         <div class="md:block absolute right-4 flex items-center gap-2">
             {% if 'order_id' in session %}
-            <span class="bg-yellow-500 px-[0.5em] rounded-full" id="cart-count">{{ order.product_list | length }}</span>
+            <span class="bg-accent-mustard px-[0.5em] py-[0.2em] rounded-full" id="cart-count">{{ order.product_list | length }}</span>
             <a href="/order/{{ session['order_id'] }}" class="text-xl" id="cart-icon">CART</a>
             {% endif %}
         </div>

@@ -40,7 +40,7 @@ def category_create():
 # @admin_required
 # def category_edit(id):
 #     context = {
-#         'category' :  category_model.Category.get_one(id=id)
+#         'category' :  category_model.Category.get(id=id)
 #     }
 #     return render_template('/pages/category/category_edit.html', **context)
 

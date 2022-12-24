@@ -3,7 +3,12 @@ SELECT * FROM bakedblessingsdb.categories;
 SELECT * FROM bakedblessingsdb.products;
 
 INSERT INTO users (first_name, last_name, email, pw, level) 
-VALUES ("tyler", "tbo", "tt@email.com", "$2b$12$5lN2BDNHzJXKUDzUPuXk1O4ZAW/.pmQUaYq0tgNdx1TIXUoLOkeUG", 2);
+VALUES ("tyler", "tbo", "tt@email.com", "$2b$12$5lN2BDNHzJXKUDzUPuXk1O4ZAW/.pmQUaYq0tgNdx1TIXUoLOkeUG", 1);
+
+INSERT INTO users (first_name, last_name, email, pw, level) 
+VALUES ("kendal", "tbo", "kt@email.com", "$2b$12$5lN2BDNHzJXKUDzUPuXk1O4ZAW/.pmQUaYq0tgNdx1TIXUoLOkeUG", 2);
+
+INSERT INTO config (max_daily_orders) VALUES (4);
 
 INSERT INTO categories (id, name) VALUES (5, "Other");
 INSERT INTO categories (id, name) VALUES (6, "Bread");

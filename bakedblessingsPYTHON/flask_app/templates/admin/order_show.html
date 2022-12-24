@@ -12,7 +12,7 @@
     {% set style = 'mb-3 shadow shadow-black p-7 rounded-xl flex flex-col gap-3 w-fit justify-center h-fit w-full' %}
     <div>
         <div class="my-5 flex justify-end gap-5">
-            <button class="bg-green-500 form-api-btn" target="order-form" method="post" api="/api/order/{{ order.id }}/update">Save Changes</button>
+            <button class="btn-select form-api-btn" target="order-form" method="post" api="/api/order/{{ order.id }}/update" after-action="redirect" path="/admin/orders">Save Changes</button>
             <button class="form-api-btn" target="notes-read-form" method="post" api="/api/order/{{ order.id }}/update" after-action="redirect" path="/admin/orders">Mark Notes as Read</button>
             <form id="notes-read-form">
                 <input type="hidden" name="public_note_read" id="public_note_read" value="1">
@@ -29,8 +29,7 @@
                             <label for="status">Status</label>
                             <select class="input p-1" name="status" id="status">
                                 <option value="{{ order.status }}">{{ order.status.capitalize() }}</option>
-                                {% set status_list = ['order submitted','order in process', 'order ready', 'out for delivery', 'order completed'] %}
-                                {% for item in status_list %}
+                                {% for item in order_status_list %}
                                 {% if item != order.status %}
                                 <option value="{{ item }}">{{ item.capitalize() }}</option>
                                 {% endif %}
@@ -72,6 +71,10 @@
                                     <label for="payment_type">Cash / Check</label>
                                 </div>
                             </div>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="has_paid" id="has_paid" {{ 'checked' if order.has_paid }}>
+                            <label for="has_paid">Order has been paid for</label>
                         </div>
                     </div>
                     <!-- Product List -->
@@ -126,10 +129,6 @@
                 </div>
             </div>
         </form>
-        <!-- <p><strong>Status: </strong> {{ order.status }}</p>
-        <p><strong>Delivery Date: </strong> {{ order.delivery_date }}</p>
-        {% set address = order.get_address %}
-        <p><strong>address: </strong> {{ address.full if address else 'No address on file' }}</p> -->
     </div>
 </div>
 {% endblock admin_content %}

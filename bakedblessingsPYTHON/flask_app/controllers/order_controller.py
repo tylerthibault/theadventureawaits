@@ -1,10 +1,11 @@
 from flask_app import app
-from flask import render_template, redirect, session, request
-from flask_app.models import order_model, user_model, address_model
+from flask import render_template, redirect, session, request, flash
+from flask_app.models import order_model, user_model, address_model, config_model
 from flask_app.config.helpers import generateCode, admin_required, login_required, log_page, page_back
-
 import datetime
 
+order_status_list = ['finalizing order', 'order submitted', 'order in process', 'order ready', 'out for delivery', 'order completed']
+order_status_colors = ['bg-red-500 text-white', 'bg-orange-400' , 'bg-yellow-300', 'bg-green-300', 'bg-yellow-300', 'bg-green-700 text-white']
 
 # ********* CREATE *********
 # @app.route('/order/new')
@@ -33,48 +34,67 @@ def order_create():
 @admin_required
 @log_page
 def admin_orders():
-
     all_orders = order_model.Order.get_all()
 
+    seven_days = datetime.date.today() + datetime.timedelta(days=7)
+    
     sorted_orders = {}
-    current_date = str(all_orders[0].delivery_date)
-    for order in all_orders:
-        print(f"checking order: {order.id} user: {order.user.fullname}")
-        if order.delivery_date != current_date:
-            current_date = order.delivery_date
-        
-        print(f"Pushing order number: {order.id}")
-        if current_date not in sorted_orders:
-            sorted_orders[current_date] = []
-        sorted_orders[current_date].append(order)
-        print("\n")
+    if len(all_orders) > 0:
+        current_date = str(all_orders[0].delivery_date)
+        for order in all_orders:
+            if order.status != 'order completed':
+                if order.delivery_date:
+                    if order.delivery_date < seven_days:
+                        if order.delivery_date != current_date:
+                            current_date = order.delivery_date
+                        
+                        if current_date not in sorted_orders:
+                            sorted_orders[current_date] = []
+                        sorted_orders[current_date].append(order)
 
     print(sorted_orders)
 
     context = {
         'all_orders': all_orders,
-        'sorted_orders': sorted_orders
+        'sorted_orders': sorted_orders,
+        'order_status_list': order_status_list,
+        'order_status_colors': order_status_colors
     }
     return render_template('/admin/orders.html', **context)
+
+@app.route('/admin/orders/all')
+@login_required
+@admin_required
+@log_page
+def admin_orders_all():
+    all_orders = order_model.Order.get_all()
+
+    context = {
+        'all_orders': all_orders,
+        'order_status_list': order_status_list,
+        'order_status_colors': order_status_colors
+    }
+    return render_template('/admin/orders_all.html', **context)
 
 @app.route('/dashboard/orders')
 @log_page
 @login_required
 def order_one():
     context = {
-        'user': user_model.User.get_one(id=session['uuid']),
+        'user': user_model.User.get(id=session['uuid']),
         'all_orders': order_model.Order.get_all({'user_id': session['uuid']})
     }
     return render_template("pages/order_one.html", **context)
 
-@app.route('/order/<int:id>')
+@app.route('/dashboard/order/<int:id>')
 @log_page
 def order_show(id):
     context = {
     'order' :  order_model.Order.get_one({'id': id}),
+    'order_status_list': order_status_list,
     }
     if 'uuid' in session:
-        context['user'] = user_model.User.get_one(id=session['uuid'])
+        context['user'] = user_model.User.get(id=session['uuid'])
     return render_template('/pages/order_show.html', **context)
 
 @app.route('/admin/order/<int:id>')
@@ -84,41 +104,49 @@ def order_show(id):
 def admin_order_show(id):
     context = {
     'order' :  order_model.Order.get_one({'id': id}),
+    'order_status_list': order_status_list
     }
     if 'uuid' in session:
-        context['user'] = user_model.User.get_one(id=session['uuid'])
+        context['user'] = user_model.User.get(id=session['uuid'])
     return render_template('/admin/order_show.html', **context)
     
-# @app.route('/order/<int:id>/edit')
-# def order_edit(id):
-#     context = {
-#         'order' :  order_model.Order.get_one(id=id)
-#     }
-#     return render_template('/pages/order/order_edit.html', **context)
-
 # ********* UPDATE *********
 @app.route('/order/<int:id>/update', methods=['POST'])
 @login_required
 def order_update(id):
-    print(request.form)
+    last_page = page_back()
     data = {
         **request.form,
     }
+    
+    if 'delivery_date' in data:
+        if data['delivery_date']:
+            date = datetime.datetime.strptime(data['delivery_date'], '%Y-%m-%d').date()
+            two_days = datetime.date.today() + datetime.timedelta(days=2)
+            if date < two_days:
+                flash("You must order at least 2 days in the future. If you need exception please contact the baker at 253-205-6889.", "err_order_daily_max")
+                return redirect(last_page)
 
-    if 'is_pickup' in request.form:
-        if request.form['is_pickup'] == 0:
+            all_orders_on_date = order_model.Order.get(delivery_date = data['delivery_date'])
+            if all_orders_on_date:
+                config = config_model.Config.get(id = 1)
+                if len(all_orders_on_date) >= config.max_daily_orders:
+                    flash("Order quantity has execced bakers daily quantity, please find another date to have these items delivered. Thank you for your understanding.", "err_order_daily_max")
+                    return redirect(last_page)
+
+    if 'is_pickup' in data:
+        if data['is_pickup'] == 0:
             address_data = {
-                'street': request.form['street'],
-                'city': request.form['city'],
-                'state': request.form['state'],
-                'zip': request.form['zip'],
+                'street': data['street'],
+                'city': data['city'],
+                'state': data['state'],
+                'zip': data['zip'],
             }
-            if 'is_primary' in request.form:
+            if 'is_primary' in data:
                 address_data['is_primary'] = 1
 
             address_id = address_model.Address.create_one(**address_data)
             data['address_id'] = address_id
-    
 
     if not order_model.Order.validator(**data):
         last_page = page_back()
@@ -128,7 +156,6 @@ def order_update(id):
     if 'order_id' in session:
         del session['order_id']
     
-    last_page = page_back()
     return redirect(last_page)
 
 @app.route('/api/order/<int:id>/update', methods=['POST'])
@@ -156,6 +183,8 @@ def api_order_update(id):
             address_id = address_model.Address.create_one(**address_data)
             data['address_id'] = address_id
     
+    if 'has_paid' in data:
+        data['has_paid'] = 1
 
     if not order_model.Order.validator(**data):
         return res, 402

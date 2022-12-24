@@ -1,0 +1,25 @@
+{% extends 'admin/base.html' %}
+
+{% block admin_title %}
+<div>
+    <h1>Admin Settings</h1>
+</div>
+{% endblock admin_title %}
+
+{% block admin_content %}
+<div class="flex justify-center">
+    <form class="flex gap-3" action="/config/update" method="post">
+        <div class="form-field-col">
+            <label for="max_daily_orders">Max Daily Orders</label>
+            <input type="number" name="max_daily_orders" id="max_daily_orders" value="{{ config.max_daily_orders }}">
+        </div>
+        <div class="form-field-col">
+            <label for="announcement">Announcement</label>
+            <textarea class="input" name="announcement" id="announcement" cols="30" rows="10"></textarea>
+        </div>
+        <div>
+            <button class="btn-success">Update</button>
+        </div>
+    </form>
+</div>
+{% endblock admin_content %}

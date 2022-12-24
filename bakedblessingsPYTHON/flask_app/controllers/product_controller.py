@@ -55,7 +55,7 @@ def product_show():
 @admin_required
 def product_edit(id):
     context = {
-        'product' :  product_model.Product.get_one(id=id),
+        'product' :  product_model.Product.get(id=id),
         'all_categories': category_model.Category.get_all()
     }
     return render_template('/admin/product_edit.html', **context)

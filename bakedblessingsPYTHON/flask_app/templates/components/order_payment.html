@@ -1,0 +1,31 @@
+<form class="flex flex-col gap-3 w-full my-3" action="/order/{{ order.id }}/update" method="post">
+    <div class="flex gap-3 justify-evenly">
+        <div>
+            <input type="radio" name="payment_type" id="payment_type" value="venmo" {{ 'checked' if order.payment_type == 'venmo' }}>
+            <label for="payment_type">Venmo</label>
+        </div>
+        <div>
+            <input type="radio" name="payment_type" id="payment_type" value="paypal" {{ 'checked' if order.payment_type == 'paypal' }}>
+            <label for="payment_type">PayPal</label>
+        </div>
+        <div>
+            <input type="radio" name="payment_type" id="payment_type" value="cash" {{ 'checked' if order.payment_type == 'cash' }}>
+            <label for="payment_type">Cash</label>
+        </div>
+    </div>
+    <div>
+        <button class="text-xs btn-success">Change Payment</button>
+    </div>
+</form>
+{% if order.payment_type == 'venmo' %}
+<h3>Venmo</h3>
+<p>@KendalThibault</p>
+<img class="w-full " src="{{ url_for('static', filename='img/venmo.png') }}" alt="venmo">
+{% elif order.payment_type == 'paypal' %}
+<h3>PayPal</h3>
+<p>@KendalTbo</p>
+<img class="w-full " src="{{ url_for('static', filename='img/paypal.png') }}" alt="paypal">
+<p>Paypal</p>
+{% else %}
+<p>Something about cash is amazing. We should never let it go out of style and therefore, we are always pleased to take some from you and keep it safe.</p>
+{% endif %}

@@ -1,9 +1,14 @@
 <form class="w-full" action="/order/{{ order.id }}/update" method="post">
-    <input type="hidden" name="status" id="status" value="submitted">
+    <input type="hidden" name="status" id="status" value="order submitted">
     <div class="mb-3 shadow shadow-black my-3 rounded-xl p-3">
         <h3 class="text-xl">What date do you want your order?</h3>
         <label for="delivery_date">Delivery Date</label>
-        <input type="date" name="delivery_date" id="delivery_date">
+        <div class="flex flex-col gap-1">
+            <input type="date" name="delivery_date" id="delivery_date">
+            {% for message in get_flashed_messages(category_filter=['err_order_daily_max']) %}
+            <p class="err-msg">{{message}}</p>
+            {% endfor %}
+        </div>
     </div>
     <div class="mb-3 shadow shadow-black my-3 rounded-xl p-3">
         <h3 class="text-xl">Do you want to pick up your order or have it delivered?</h3>
@@ -65,7 +70,7 @@
         </div>
     </div>
     <div class="flex justify-end">
-        <button class="bg-green-400">Submit Order</button>
+        <button class="btn-success">Submit Order</button>
     </div>
 </form>
 

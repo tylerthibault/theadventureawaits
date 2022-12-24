@@ -21,7 +21,7 @@ class Product(base_model.Base):
 
     @property
     def get_category(self):
-        return category_model.Category.get_one(id=self.category_id)
+        return category_model.Category.get(id=self.category_id)
 
     @classmethod
     def get_all_with_category(cls):
