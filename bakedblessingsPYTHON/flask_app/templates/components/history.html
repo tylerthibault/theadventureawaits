@@ -1,12 +1,13 @@
 <div class="flex flex-col gap-3" id="history">
     <h2 class="section-header">Sourdough History</h2>
 
-    <div class="grid grid-cols-2 gap-3">
+    <div class="flex flex-col md:grid grid-cols-2 gap-3">
         <div>
             <h3 class="text-xl">What is Sourdough Bread?</h3>
             <p>Sourdough bread is a type of naturally leavened bread made from naturally occurring bacteria and wild yeast, otherwise known as a sourdough starter. The sourdough starter is fed and kept alive for at least a week before it is used to make sourdough bread.</p>
         
             <p>Each loaf of sourdough imparts a distinctly sour taste, coupled with a crisp crust, and incredibly soft interior.</p>
+            <img class="rounded-lg shadow mt-3" src="{{ url_for('static', filename='img/8in_loaf.png') }}" alt="">
         </div>
         
         <div>
@@ -56,4 +57,4 @@
         </div>
     </div>
     
-    <p>Article taken from https://www.mydailysourdoughbread.com/origins-of-sourdough-bread/.</p>
+    <p>Article taken from <a class="text-blue-500 underline" href="https://www.mydailysourdoughbread.com/origins-of-sourdough-bread/">Here</a>.</p>
