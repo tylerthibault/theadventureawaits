@@ -1,6 +1,6 @@
-SELECT * FROM bakedblessingsdb.users;
-SELECT * FROM bakedblessingsdb.categories;
-SELECT * FROM bakedblessingsdb.products;
+SELECT * FROM users;
+SELECT * FROM categories;
+SELECT * FROM products;
 
 INSERT INTO users (first_name, last_name, email, pw, level) 
 VALUES ("tyler", "tbo", "tt@email.com", "$2b$12$5lN2BDNHzJXKUDzUPuXk1O4ZAW/.pmQUaYq0tgNdx1TIXUoLOkeUG", 1);
