@@ -9,7 +9,7 @@
 {% block admin_content %}
 <div class="flex gap-5 justify-center">
     <div class="rounded shadow w-fit p-5">
-        <form class="w-fit" action="/config/update" method="post">
+        <form class="w-fit" action="/admin/config/update" method="post">
             <div class="form-field-col">
                 <label for="max_daily_orders">Max Daily Orders</label>
                 <input type="number" name="max_daily_orders" id="max_daily_orders"
@@ -58,16 +58,24 @@
         </form>
     </div>
     <div class="rounded shadow w-fit p-5">
-        <form action="/days_off/update" method="post">
+        <form action="/admin/config/days_off/update" method="post">
             <div class="form-field-col">
                 <label for="day">Day Off</label>
                 <input type="date" name="day" id="day">
+                {% for message in get_flashed_messages(category_filter=['err_days_off_day']) %}
+                <p class="err-msg">{{message}}</p>
+                {% endfor %}
             </div>
             <div class="form-field-col">
                 <button class="btn-success">Take Day off</button>
             </div>
-
         </form>
+        <ul class="flex flex-col items-center">
+            <p>Next 10 Days off</p>
+            {% for day in all_days_off %}
+            <li><a href="/admin/config/days_off/{{ day.id }}/delete">❌</a><span>{{ day.day }}</span></li>
+            {% endfor %}
+        </ul>
     </div>
 </div>
 {% endblock admin_content %}

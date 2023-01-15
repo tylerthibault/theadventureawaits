@@ -89,9 +89,17 @@ def order_one():
 @app.route('/dashboard/order/<int:id>')
 @log_page
 def order_show(id):
+    config_obj= config_model.Config.get(id=1)
+    delivery_days=[]
+    days=['deliver_monday', 'deliver_tuesday', 'deliver_wednesday', 'deliver_thursday', 'deliver_friday', 'deliver_saturday', 'deliver_sunday']
+    for day in days:
+        temp = getattr(config_obj, day)
+        if temp:
+            delivery_days.append(day[8:])
     context = {
     'order' :  order_model.Order.get_one({'id': id}),
     'order_status_list': order_status_list,
+    'delivery_days': delivery_days
     }
     if 'uuid' in session:
         context['user'] = user_model.User.get(id=session['uuid'])
@@ -162,9 +170,9 @@ def api_order_update(id):
     if not order_model.Order.validator(**data):
         return res, 402
 
-    order_model.Order.update_one({'id':id}, **data)
-    if 'order_id' in session:
-        del session['order_id']
+    # order_model.Order.update_one({'id':id}, **data)
+    # if 'order_id' in session:
+    #     del session['order_id']
     
     
     return res, 200

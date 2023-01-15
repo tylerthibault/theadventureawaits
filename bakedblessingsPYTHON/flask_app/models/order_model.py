@@ -3,7 +3,7 @@ from flask import flash, session
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask_app import DATABASE
 import datetime
-from flask_app.models import config_model
+from flask_app.models import config_model, config_days_off_model
 
 class Order(base_model.Base):
     table_name = "orders"
@@ -127,7 +127,6 @@ class Order(base_model.Base):
                 }
 
                 cannot_deliver = delivery_day[d.weekday()]
-                print(f"cannot deliver: {cannot_deliver}")
                 if cannot_deliver == 0:
                     is_valid = False
                     flash("This is not a valid delivery date", "err_order_daily_max")
@@ -139,6 +138,12 @@ class Order(base_model.Base):
                     if len(all_orders_on_date) >= config.max_daily_orders:
                         flash("Order quantity has execced bakers daily quantity, please find another date to have these items delivered. Thank you for your understanding.", "err_order_daily_max")
                         is_valid = False
+                
+                days_off = config_days_off_model.DaysOff.get_all()
+                for day in days_off:
+                    if day.day == date:
+                        is_valid = False
+                        flash("Sorry looks like I am out of the office that day. Please pick another day. Thank you for understanding", "err_order_daily_max")
 
         if 'is_pickup' in data:
             if data['is_pickup'] == 0:

@@ -1,6 +1,6 @@
 from flask_app import app
 from flask import render_template, redirect, session, request
-from flask_app.models import config_model
+from flask_app.models import config_model, config_days_off_model
 from flask_app.config.helpers import admin_required, login_required, log_page, page_back
 
 # ********* CREATE *********
@@ -26,7 +26,8 @@ def config_create():
 @admin_required
 def admin_settings():
     context = {
-        'config': config_model.Config.get(id = 1)
+        'config': config_model.Config.get(id = 1),
+        'all_days_off': config_days_off_model.DaysOff.get_10()
     }
     return render_template("admin/settings.html", **context)
 
@@ -46,7 +47,9 @@ def config_edit(id):
 
 
 # ********* UPDATE *********
-@app.route('/config/update', methods=['POST'])  
+@app.route('/admin/config/update', methods=['POST'])  
+@login_required
+@admin_required
 def config_update():
     data = {
         **request.form,
@@ -67,8 +70,20 @@ def config_update():
     config_model.Config.update_one({'id':1}, **data)
     return redirect(last_page)
 
+@app.route('/admin/config/days_off/update', methods=['post'])
+@login_required
+@admin_required
+def days_off_update():
+    last_page = page_back()
+    if not config_days_off_model.DaysOff.validator(**request.form):
+        return redirect(last_page)
+    config_days_off_model.DaysOff.create_one(**request.form)
+    return redirect(last_page)
+
+
 # ********* DELETE *********
-@app.route('/config/<int:id>/delete')
+@app.route('/admin/config/days_off/<int:id>/delete')
 def config_delete(id):
-    config_model.Config.delete_one(id=id)
-    return redirect('/config')
+    last_page = page_back()
+    config_days_off_model.DaysOff.delete_one(id=id)
+    return redirect(last_page)

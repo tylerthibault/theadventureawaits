@@ -28,6 +28,17 @@
             {% include 'forms/order_notes.html' %}
         {% else %}
         <div>
+            <div class="text-center p-3 bg-yellow-500 rounded shadow shadow-black">
+                <p>We will be delivering on the following days</p>
+                <ul class="flex gap-x-3 flex-wrap justify-center">
+                    {% for day in delivery_days %}
+                    <li>{{ day.capitalize() }}</li>
+                    {% if loop.index != delivery_days|length %}
+                    <li>|</li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
             {% include 'forms/order_form2.html' %}
         </div>
         {% endif %}
