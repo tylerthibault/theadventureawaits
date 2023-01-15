@@ -1,13 +1,15 @@
 # a cursor is the object we use to interact with the database
 import pymysql.cursors
+import os
+from flask_app import IS_LOCAL
 # this class will give us an instance of a connection to our database
 class MySQLConnection:
     def __init__(self, db):
         # change the user and password as needed
         connection = pymysql.connect(
-            host = 'localhost',
-            user = 'root', 
-            password = 'root', 
+            host = 'localhost'if IS_LOCAL else os.environ.get("DATABASE_HOST"),
+            user = 'root' if IS_LOCAL else os.environ.get("DATABASE_USERNAME"), 
+            password = 'root'if IS_LOCAL else os.environ.get("DATABASE_PASSWORD"), 
             db = db,
             charset = 'utf8mb4',
             cursorclass = pymysql.cursors.DictCursor,
