@@ -42,6 +42,10 @@
 
     {% endblock content %}
 
+    {% block footer %}
+        
+    {% endblock footer %}
+
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     <script src="{{ url_for('static', filename='js/form_api.js') }}"></script>
     {% block js %}
