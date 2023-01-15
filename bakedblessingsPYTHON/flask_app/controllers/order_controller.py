@@ -125,9 +125,9 @@ def order_update(id):
     if not order_model.Order.validator(**data):
         return redirect(last_page)
 
-    # order_model.Order.update_one({'id':id}, **data)
-    # if 'order_id' in session:
-    #     del session['order_id']
+    order_model.Order.update_one({'id':id}, **data)
+    if 'order_id' in session:
+        del session['order_id']
     
     return redirect(last_page)
 
