@@ -7,19 +7,67 @@
 {% endblock admin_title %}
 
 {% block admin_content %}
-<div class="flex justify-center">
-    <form class="flex gap-3" action="/config/update" method="post">
-        <div class="form-field-col">
-            <label for="max_daily_orders">Max Daily Orders</label>
-            <input type="number" name="max_daily_orders" id="max_daily_orders" value="{{ config.max_daily_orders }}">
-        </div>
-        <div class="form-field-col">
-            <label for="announcement">Announcement</label>
-            <textarea class="input" name="announcement" id="announcement" cols="30" rows="10"></textarea>
-        </div>
-        <div>
-            <button class="btn-success">Update</button>
-        </div>
-    </form>
+<div class="flex gap-5 justify-center">
+    <div class="rounded shadow w-fit p-5">
+        <form class="w-fit" action="/config/update" method="post">
+            <div class="form-field-col">
+                <label for="max_daily_orders">Max Daily Orders</label>
+                <input type="number" name="max_daily_orders" id="max_daily_orders"
+                    value="{{ config.max_daily_orders }}">
+            </div>
+            <div class="form-field-col">
+                <label for="announcement">Announcement</label>
+                <textarea class="input" name="announcement" id="announcement" cols="30" rows="10"></textarea>
+            </div>
+            <div>
+                <h3 class="text-xl text-center">Delivery Days</h3>
+            </div>
+            <div class="grid grid-cols-3 my-3">
+                <div class="flex gap-1 items-center">
+                    <input type="checkbox" name="deliver_monday" id="deliver_monday" {{ 'checked' if config.deliver_monday }}>
+                    <label for="deliver_monday">Monday</label>
+                </div>
+                <div class="flex gap-1 items-center">
+                    <input type="checkbox" name="deliver_tuesday" id="deliver_tuesday" {{ 'checked' if config.deliver_tuesday }}>
+                    <label for="deliver_tuesday">Tuesday</label>
+                </div>
+                <div class="flex gap-1 items-center">
+                    <input type="checkbox" name="deliver_wednesday" id="deliver_wednesday" {{ 'checked' if config.deliver_wednesday }}>
+                    <label for="deliver_wednesday">Wednesday</label>
+                </div>
+                <div class="flex gap-1 items-center">
+                    <input type="checkbox" name="deliver_thursday" id="deliver_thursday" {{ 'checked' if config.deliver_thursday }}>
+                    <label for="deliver_thursday">Thursday</label>
+                </div>
+                <div class="flex gap-1 items-center">
+                    <input type="checkbox" name="deliver_friday" id="deliver_friday" {{ 'checked' if config.deliver_friday }}>
+                    <label for="deliver_friday">Friday</label>
+                </div>
+                <div class="flex gap-1 items-center">
+                    <input type="checkbox" name="deliver_saturday" id="deliver_saturday" {{ 'checked' if config.deliver_saturday }}>
+                    <label for="deliver_saturday">Saturday</label>
+                </div>
+                <div class="flex gap-1 items-center col-start-2">
+                    <input type="checkbox" name="deliver_sunday" id="deliver_sunday" {{ 'checked' if config.deliver_sunday }}>
+                    <label for="deliver_sunday">Sunday</label>
+                </div>
+            </div>
+            <div class="form-field-col">
+                <button class="btn-success">Update</button>
+            </div>
+        </form>
+    </div>
+    <div class="rounded shadow w-fit p-5">
+        <form action="/days_off/update" method="post">
+            <div class="form-field-col">
+                <label for="day">Day Off</label>
+                <input type="date" name="day" id="day">
+            </div>
+            <div class="form-field-col">
+                <button class="btn-success">Take Day off</button>
+            </div>
+
+        </form>
+    </div>
 </div>
 {% endblock admin_content %}

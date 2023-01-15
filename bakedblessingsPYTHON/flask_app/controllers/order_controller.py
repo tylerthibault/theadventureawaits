@@ -118,43 +118,16 @@ def order_update(id):
     data = {
         **request.form,
     }
-    
-    if 'delivery_date' in data:
-        if data['delivery_date']:
-            date = datetime.datetime.strptime(data['delivery_date'], '%Y-%m-%d').date()
-            two_days = datetime.date.today() + datetime.timedelta(days=2)
-            if date < two_days:
-                flash("You must order at least 2 days in the future. If you need exception please contact the baker at 253-205-6889.", "err_order_daily_max")
-                return redirect(last_page)
 
-            all_orders_on_date = order_model.Order.get(delivery_date = data['delivery_date'])
-            if all_orders_on_date:
-                config = config_model.Config.get(id = 1)
-                if len(all_orders_on_date) >= config.max_daily_orders:
-                    flash("Order quantity has execced bakers daily quantity, please find another date to have these items delivered. Thank you for your understanding.", "err_order_daily_max")
-                    return redirect(last_page)
-
-    if 'is_pickup' in data:
-        if data['is_pickup'] == 0:
-            address_data = {
-                'street': data['street'],
-                'city': data['city'],
-                'state': data['state'],
-                'zip': data['zip'],
-            }
-            if 'is_primary' in data:
-                address_data['is_primary'] = 1
-
-            address_id = address_model.Address.create_one(**address_data)
-            data['address_id'] = address_id
-
-    if not order_model.Order.validator(**data):
-        last_page = page_back()
+    if not order_model.Order.validate(data):
         return redirect(last_page)
 
-    order_model.Order.update_one({'id':id}, **data)
-    if 'order_id' in session:
-        del session['order_id']
+    if not order_model.Order.validator(**data):
+        return redirect(last_page)
+
+    # order_model.Order.update_one({'id':id}, **data)
+    # if 'order_id' in session:
+    #     del session['order_id']
     
     return redirect(last_page)
 

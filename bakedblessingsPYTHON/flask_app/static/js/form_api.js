@@ -1,4 +1,5 @@
 const allFormAPIBtn = document.querySelectorAll(".form-api-btn")
+const allFormAPIChange = document.querySelectorAll(".form-api-change")
 
 for (let btn of allFormAPIBtn) {
     btn.addEventListener("click", function () {

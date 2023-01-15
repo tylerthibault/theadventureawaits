@@ -2,6 +2,8 @@ from flask_app.models import base_model, product_model, user_model, address_mode
 from flask import flash, session
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask_app import DATABASE
+import datetime
+from flask_app.models import config_model
 
 class Order(base_model.Base):
     table_name = "orders"
@@ -99,3 +101,57 @@ class Order(base_model.Base):
         order.product_list = product_list
         order.total = sum
         return order
+
+    @staticmethod
+    def validate(data):
+        is_valid = True
+
+        if 'delivery_date' in data:
+            if data['delivery_date']:
+                d = datetime.datetime.strptime(data['delivery_date'], '%Y-%m-%d')
+                date = d.date()
+                two_days = datetime.date.today() + datetime.timedelta(days=2)
+                if date < two_days:
+                    flash("You must order at least 2 days in the future. If you need exception please contact the baker at 253-205-6889.", "err_order_daily_max")
+                    is_valid = False
+                
+                config = config_model.Config.get(id = 1)
+                delivery_day = {
+                    0 : config.deliver_monday,
+                    1 : config.deliver_tuesday,
+                    2 : config.deliver_wednesday,
+                    3 : config.deliver_thursday,
+                    4 : config.deliver_friday,
+                    5 : config.deliver_saturday,
+                    6 : config.deliver_sunday,
+                }
+
+                cannot_deliver = delivery_day[d.weekday()]
+                print(f"cannot deliver: {cannot_deliver}")
+                if cannot_deliver == 0:
+                    is_valid = False
+                    flash("This is not a valid delivery date", "err_order_daily_max")
+
+                all_orders_on_date = Order.get(delivery_date = data['delivery_date'])
+                if type(all_orders_on_date) != list:
+                    all_orders_on_date = [all_orders_on_date]
+                if all_orders_on_date:
+                    if len(all_orders_on_date) >= config.max_daily_orders:
+                        flash("Order quantity has execced bakers daily quantity, please find another date to have these items delivered. Thank you for your understanding.", "err_order_daily_max")
+                        is_valid = False
+
+        if 'is_pickup' in data:
+            if data['is_pickup'] == 0:
+                address_data = {
+                    'street': data['street'],
+                    'city': data['city'],
+                    'state': data['state'],
+                    'zip': data['zip'],
+                }
+                if 'is_primary' in data:
+                    address_data['is_primary'] = 1
+
+                address_id = address_model.Address.create_one(**address_data)
+                data['address_id'] = address_id
+
+        return is_valid

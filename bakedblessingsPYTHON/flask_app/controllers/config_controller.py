@@ -51,6 +51,14 @@ def config_update():
     data = {
         **request.form,
     }
+
+    attributes = ['deliver_monday', 'deliver_tuesday', 'deliver_wednesday', 'deliver_thursday', 'deliver_friday', 'deliver_saturday', 'deliver_sunday']
+    for attribute in attributes:
+        if attribute in data:
+            data[attribute] = 1
+        else:
+            data[attribute] = 0
+    
     last_page = page_back()
 
     if not config_model.Config.validator(**data):
